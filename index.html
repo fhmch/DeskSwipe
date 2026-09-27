@@ -4380,13 +4380,32 @@
             const fbCard = document.getElementById("feedback-section-card");
             if (fbCard) fbCard.style.display = "block";
         }
-        }
 
         // ========================================================
-        // 10. USER FEEDBACK SYSTEM
+        // 10. USER FEEDBACK SYSTEM (Private Delivery to Developer)
         // ========================================================
+        // 開発者へのフィードバック受信設定（第三者には非公開・あなただけに届きます）
+        // 以下のいずれかを設定することで、即座にフィードバックが届くようになります：
+        // 1. web3forms_key: "web3forms.com で無料取得したアクセスキー" (メールアドレスを隠蔽して受信可能)
+        // 2. formsubmit_email: "受信したいあなたのメールアドレス" (FormSubmit経由で直接メール受信)
+        // 3. discord_webhook: "DiscordのチャンネルウェブフックURL" (Discordへ即時通知)
+        // 4. gas_endpoint: "Google Apps ScriptのウェブアプリURL" (Googleスプレッドシートへ自動蓄積)
+        const FEEDBACK_CONFIG = {
+            web3forms_key: "", // 例: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+            formsubmit_email: "", // 例: "your-email@example.com"
+            discord_webhook: "", // 例: "https://discord.com/api/webhooks/..."
+            gas_endpoint: "" // 例: "https://script.google.com/macros/s/..."
+        };
+
         let currentFeedbackRating = 5;
         let currentFeedbackCategory = 'parts';
+
+        const fbCategoryLabels = {
+            parts: "パーツ候補の追加要望",
+            diagnosis: "診断精度の改善",
+            ui: "UI・操作性の改善",
+            other: "その他ご意見・感想"
+        };
 
         function setFeedbackRating(val) {
             currentFeedbackRating = val;
@@ -4406,7 +4425,7 @@
             playSound('select');
         }
 
-        function submitUserFeedback() {
+        async function submitUserFeedback() {
             const textInput = document.getElementById("feedback-comment-input");
             const comment = (textInput ? textInput.value : "").trim();
             if (!comment) {
@@ -4414,20 +4433,88 @@
                 return;
             }
 
+            const submitBtn = document.querySelector(".btn-submit-feedback");
+            const statusMsg = document.getElementById("feedback-status-msg");
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "送信中...";
+            }
+
+            const buildTitle = generateBuildConceptTitle(collectedAnswers.spec, collectedAnswers.vibe);
+            const partsSummaryList = Object.keys(selectedParts).map(k => `${k.toUpperCase()}: ${selectedParts[k]?.name || '未定'}`).join(' / ');
+            const starsString = "★".repeat(currentFeedbackRating) + "☆".repeat(5 - currentFeedbackRating) + ` (${currentFeedbackRating}/5点)`;
+            const categoryLabel = fbCategoryLabels[currentFeedbackCategory] || currentFeedbackCategory;
+            const nowTime = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+
             const feedbackEntry = {
                 id: Date.now(),
-                date: new Date().toLocaleString('ja-JP'),
-                rating: currentFeedbackRating,
-                category: currentFeedbackCategory,
+                date: nowTime,
+                rating: starsString,
+                category: categoryLabel,
                 comment: comment,
-                currentBuild: generateBuildConceptTitle(collectedAnswers.spec, collectedAnswers.vibe)
+                currentBuild: buildTitle,
+                partsSummary: partsSummaryList,
+                device: navigator.userAgent
             };
 
+            // 1. ローカルバックアップ（ブラウザ内保存）
             try {
                 const existing = JSON.parse(localStorage.getItem("desk_user_feedback") || "[]");
                 existing.unshift(feedbackEntry);
                 localStorage.setItem("desk_user_feedback", JSON.stringify(existing.slice(0, 50)));
             } catch(e) {}
+
+            // 2. 外部通知先への非同期送信
+            try {
+                if (FEEDBACK_CONFIG.web3forms_key) {
+                    await fetch("https://api.web3forms.com/submit", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                        body: JSON.stringify({
+                            access_key: FEEDBACK_CONFIG.web3forms_key,
+                            subject: `【DeskSwipe 改善要望】${starsString} - ${categoryLabel}`,
+                            from_name: "DeskSwipe Feedback",
+                            "評価": starsString,
+                            "カテゴリ": categoryLabel,
+                            "ご意見・ご要望": comment,
+                            "診断構成": buildTitle,
+                            "パーツ詳細": partsSummaryList,
+                            "送信日時": nowTime
+                        })
+                    });
+                } else if (FEEDBACK_CONFIG.formsubmit_email) {
+                    await fetch(`https://formsubmit.co/ajax/${FEEDBACK_CONFIG.formsubmit_email}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                        body: JSON.stringify({
+                            _subject: `【DeskSwipe 改善要望】${starsString} - ${categoryLabel}`,
+                            "評価": starsString,
+                            "カテゴリ": categoryLabel,
+                            "ご意見・ご要望": comment,
+                            "診断構成": buildTitle,
+                            "パーツ詳細": partsSummaryList,
+                            "送信日時": nowTime
+                        })
+                    });
+                } else if (FEEDBACK_CONFIG.discord_webhook) {
+                    await fetch(FEEDBACK_CONFIG.discord_webhook, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            content: `📩 **【DeskSwipe 新着フィードバック】**\n**評価**: ${starsString}\n**カテゴリ**: ${categoryLabel}\n**コメント**: ${comment}\n**構成**: ${buildTitle}\n**日時**: ${nowTime}`
+                        })
+                    });
+                } else if (FEEDBACK_CONFIG.gas_endpoint) {
+                    await fetch(FEEDBACK_CONFIG.gas_endpoint, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        mode: "no-cors",
+                        body: JSON.stringify(feedbackEntry)
+                    });
+                }
+            } catch(err) {
+                console.warn("Feedback delivery network request notice:", err);
+            }
 
             playSound('fanfare');
             const formEl = document.getElementById("feedback-form");
