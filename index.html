@@ -1728,11 +1728,15 @@
         .shop-links-row {
             display: flex;
             gap: 6px;
-            margin-top: 4px;
+            margin-top: 6px;
+            flex-wrap: nowrap;
+            align-items: center;
+            width: 100%;
         }
         .shop-btn {
-            flex: 1;
-            padding: 7px 4px;
+            flex: 1 1 0;
+            min-width: 0;
+            padding: 7px 2px;
             border-radius: 6px;
             font-size: 0.68rem;
             font-weight: 800;
@@ -1740,6 +1744,9 @@
             text-align: center;
             transition: all 0.2s;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
         }
         .shop-btn-amazon {
             background: rgba(255, 153, 0, 0.15);
@@ -1767,6 +1774,100 @@
         .shop-btn-kakaku:hover {
             background: #38bdf8;
             color: #000;
+        }
+
+        /* Desk Upgrade Pack Styles */
+        .upgrade-section-header {
+            margin-top: 24px;
+            margin-bottom: 14px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .upgrade-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--cyber-gold);
+            background: rgba(251, 191, 36, 0.12);
+            border: 1px solid rgba(251, 191, 36, 0.35);
+            padding: 3px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+        .upgrade-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 6px;
+        }
+        .upgrade-subtitle {
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        .upgrade-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        @media (min-width: 860px) {
+            .upgrade-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .upgrade-card {
+            background: linear-gradient(135deg, rgba(16, 22, 36, 0.9) 0%, rgba(10, 14, 24, 0.9) 100%);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+        }
+        .upgrade-card:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .upgrade-card-tag {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--cyan);
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .upgrade-card-name {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.35;
+            margin-bottom: 4px;
+        }
+        .upgrade-card-price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--cyber-gold);
+            margin-bottom: 8px;
+        }
+        .upgrade-card-desc {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            line-height: 1.45;
+            margin-bottom: 10px;
+        }
+        .upgrade-card-spec {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.66rem;
+            color: var(--cyan);
+            background: rgba(0, 240, 255, 0.06);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            line-height: 1.4;
         }
 
         /* ==================================================== */
@@ -1936,6 +2037,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 12px;
         }
         .report-card-name { font-size: 0.85rem; font-weight: 800; color: #fff; }
         .report-card-price { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--cyber-gold); font-weight: 700; }
@@ -2311,6 +2413,14 @@
             </div>
 
             <div class="report-list" id="report-list"></div>
+
+            <!-- DESK UPGRADE PACK (PERIPHERALS & FURNITURE) -->
+            <div class="upgrade-section-header">
+                <span class="upgrade-badge">DESK UPGRADE PACK</span>
+                <h3 class="upgrade-title">デスク空間アップグレード推奨（周辺環境・家具）</h3>
+                <p class="upgrade-subtitle">選択されたスタイルと用途に最適な電動昇降デスク、高剛性モニターアーム、作業効率化ギアの推奨セットです。</p>
+            </div>
+            <div class="upgrade-grid" id="upgrade-items-grid"></div>
 
             <button class="btn-reset-safe" style="width:100%;margin-top:14px;padding:12px;" onclick="confirmResetAll()">診断に戻る</button>
         </div>
@@ -2727,6 +2837,114 @@
                 { key: "standard", label: "32GB+1TB" },
                 { key: "pro", label: "64GB+2TB" }
             ]
+        };
+
+        const deskUpgradeRecommendationsDB = {
+            desk: {
+                wood_craft: {
+                    name: "FLEXISPOT E7 (天然木ウォールナット無垢天板 140×70cm)",
+                    tag: "空間拡張 • 電動昇降デスク",
+                    priceText: "¥58,000",
+                    priceVal: 58000,
+                    desc: "北欧ウッドケースの質感と調和する天然木天板。立ち作業で集中力を維持。",
+                    deepSpecs: "耐荷重125kg / 3段式静音デュアルモーター / メモリ機能付",
+                    amazon: "https://www.amazon.co.jp/s?k=FLEXISPOT+E7+天然木",
+                    rakuten: "https://search.rakuten.co.jp/search/mall/FLEXISPOT+E7+天板/",
+                    kakaku: "https://kakaku.com/search_results/FLEXISPOT+E7/"
+                },
+                glass_rgb: {
+                    name: "FLEXISPOT E7 Pro (カーブエッジ マットブラック天板 160×70cm)",
+                    tag: "空間拡張 • 電動昇降デスク",
+                    priceText: "¥62,000",
+                    priceVal: 62000,
+                    desc: "パノラマガラスPCとRGBライティングが映える重厚なワイドブラック天板。",
+                    deepSpecs: "コの字型脚部（足元広々）/ 耐荷重100kg / USB充電ポート搭載",
+                    amazon: "https://www.amazon.co.jp/s?k=FLEXISPOT+E7+Pro",
+                    rakuten: "https://search.rakuten.co.jp/search/mall/FLEXISPOT+E7+Pro/",
+                    kakaku: "https://kakaku.com/search_results/FLEXISPOT+E7+Pro/"
+                },
+                clean_white: {
+                    name: "FLEXISPOT Q8 (ピュアホワイト天板 ワイヤレス充電内蔵)",
+                    tag: "空間拡張 • 電動昇降デスク",
+                    priceText: "¥68,000",
+                    priceVal: 68000,
+                    desc: "白ミニマルデスクを極める洗練デザイン。天板埋め込みワイヤレス充電。",
+                    deepSpecs: "ワイヤレス充電内蔵 / 引出し標準装備 / 衝突検知セーフティ",
+                    amazon: "https://www.amazon.co.jp/s?k=FLEXISPOT+Q8",
+                    rakuten: "https://search.rakuten.co.jp/search/mall/FLEXISPOT+Q8/",
+                    kakaku: "https://kakaku.com/search_results/FLEXISPOT+Q8/"
+                }
+            },
+            arm: {
+                dual: {
+                    name: "エルゴトロン LX デュアル ダイレクトアーム (マットブラック/ホワイト)",
+                    tag: "疲労軽減 • 高剛性モニターアーム",
+                    priceText: "¥38,500",
+                    priceVal: 38500,
+                    desc: "縦横2枚のマルチモニターをミリ単位で整列。デスク天板を100%解放。",
+                    deepSpecs: "特許CF技術 / 各アーム耐荷重9.1kg / 10年長期保証",
+                    amazon: "https://www.amazon.co.jp/s?k=エルゴトロン+LX+デュアル",
+                    rakuten: "https://search.rakuten.co.jp/search/mall/エルゴトロン+LX+デュアル/",
+                    kakaku: "https://kakaku.com/search_results/エルゴトロン+LX+デュアル/"
+                },
+                white: {
+                    name: "エルゴトロン LX デスクマウントアーム (ホワイト/アルミニウム)",
+                    tag: "疲労軽減 • 高剛性モニターアーム",
+                    priceText: "¥23,500",
+                    priceVal: 23500,
+                    desc: "ホワイトデスク空間に美しく溶け込むアルミ削り出しの定番最高峰アーム。",
+                    deepSpecs: "34インチ対応 (11.3kgまで) / 自由自在な高さ調整 / 10年保証",
+                    amazon: "https://www.amazon.co.jp/s?k=エルゴトロン+LX+ホワイト",
+                    rakuten: "https://search.rakuten.co.jp/search/mall/エルゴトロン+LX+ホワイト/",
+                    kakaku: "https://kakaku.com/search_results/エルゴトロン+LX+ホワイト/"
+                },
+                single: {
+                    name: "エルゴトロン LX デスクマウントアーム (マットブラック)",
+                    tag: "疲労軽減 • 高剛性モニターアーム",
+                    priceText: "¥22,800",
+                    priceVal: 22800,
+                    desc: "大型湾曲モニターも一切お辞儀しない堅牢性。配線ケーブルも完全内蔵。",
+                    deepSpecs: "34インチ対応 (11.3kgまで) / 特許CF技術 / 10年保証",
+                    amazon: "https://www.amazon.co.jp/s?k=エルゴトロン+LX+マットブラック",
+                    rakuten: "https://search.rakuten.co.jp/search/mall/エルゴトロン+LX+マットブラック/",
+                    kakaku: "https://kakaku.com/search_results/エルゴトロン+LX/"
+                }
+            },
+            chair_or_gear: {
+                fps: {
+                    name: "Logicool G PRO X SUPERLIGHT 2 ＋ Artisan 零 ゲーミングマット",
+                    tag: "勝率向上 • 超高精度マウス＆マット",
+                    priceText: "¥25,400",
+                    priceVal: 25400,
+                    desc: "重量60g未満のワイヤレス最高峰。ミリ秒のエイム精度を極限まで高めるセット。",
+                    deepSpecs: "HERO 2センサー (32000DPI) / LIGHTFORCEスイッチ / 超低摩擦",
+                    amazon: "https://www.amazon.co.jp/s?k=G+PRO+X+SUPERLIGHT+2",
+                    rakuten: "https://search.rakuten.co.jp/search/mall/G+PRO+X+SUPERLIGHT+2/",
+                    kakaku: "https://kakaku.com/search_results/G+PRO+X+SUPERLIGHT+2/"
+                },
+                office: {
+                    name: "COFO Chair Pro (高機能エルゴノミクス メッシュチェア)",
+                    tag: "健康維持 • 疲労軽減ワークチェア",
+                    priceText: "¥39,800",
+                    priceVal: 39800,
+                    desc: "腰への負担を極小化する可動式ランバーサポートと格納式フットレストを搭載。",
+                    deepSpecs: "高密度エラストマーメッシュ / 135度リクライニング / 3Dアームレスト",
+                    amazon: "https://www.amazon.co.jp/s?k=COFO+Chair+Pro",
+                    rakuten: "https://search.rakuten.co.jp/search/mall/COFO+Chair+Pro/",
+                    kakaku: "https://kakaku.com/search_results/COFO+Chair+Pro/"
+                },
+                creator: {
+                    name: "BenQ ScreenBar Halo (無線リモコン・間接照明付モニターライト)",
+                    tag: "アイケア • 画面映り込みゼロ照明",
+                    priceText: "¥22,900",
+                    priceVal: 22900,
+                    desc: "画面への映り込みゼロで手元のみを照らす。湾曲モニターにも完全対応。",
+                    deepSpecs: "自動調光機能 / 色温度2700K〜6500K / 背面アンビエント間接照明",
+                    amazon: "https://www.amazon.co.jp/s?k=BenQ+ScreenBar+Halo",
+                    rakuten: "https://search.rakuten.co.jp/search/mall/BenQ+ScreenBar+Halo/",
+                    kakaku: "https://kakaku.com/search_results/BenQ+ScreenBar+Halo/"
+                }
+            }
         };
 
         let currentActiveFilters = {};
@@ -3644,7 +3862,7 @@
                                             <div class="shop-links-row">
                                                 <a href="${cand.amazon}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-amazon">Amazon ↗</a>
                                                 <a href="${getRakutenLink(cand)}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-rakuten">楽天市場 ↗</a>
-                                                <a href="${cand.kakaku}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-kakaku">価格.com最安 ↗</a>
+                                                <a href="${cand.kakaku}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-kakaku">価格.com ↗</a>
                                             </div>
                                         `}
                                     </div>
@@ -4032,22 +4250,67 @@
 
             document.getElementById("report-list").innerHTML = allItems.map(it => `
                 <div class="report-card-item">
-                    <div>
+                    <div style="flex:1;min-width:0;padding-right:8px;">
                         <div style="font-size:0.68rem;color:var(--cyan);font-weight:800;letter-spacing:0.5px;">${it.catName}</div>
-                        <div class="report-card-name">${it.item.name}</div>
+                        <div class="report-card-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${it.item.name}</div>
                         <div class="report-card-price">${it.item.priceText}</div>
                     </div>
-                    <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
+                    <div style="width:230px;flex-shrink:0;">
                         ${it.item.key === 'igpu' || (it.catName === 'グラフィックボード' && isNoGpu) ? `
-                            <span style="font-size:0.72rem;color:#10b981;font-weight:800;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);padding:4px 10px;border-radius:6px;">CPU付属 • 追加購入不要 ¥0</span>
+                            <div style="font-size:0.72rem;color:#10b981;font-weight:800;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);padding:6px 10px;border-radius:6px;text-align:center;white-space:nowrap;">CPU付属 • 追加購入不要 ¥0</div>
                         ` : `
-                            <a href="${it.item.amazon || '#'}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-amazon" style="padding:5px 8px;">Amazon ↗</a>
-                            <a href="${getRakutenLink(it.item)}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-rakuten" style="padding:5px 8px;">楽天市場 ↗</a>
-                            <a href="${it.item.kakaku || '#'}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-kakaku" style="padding:5px 8px;">価格.com ↗</a>
+                            <div class="shop-links-row" style="margin-top:0;">
+                                <a href="${it.item.amazon || '#'}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-amazon">Amazon ↗</a>
+                                <a href="${getRakutenLink(it.item)}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-rakuten">楽天市場 ↗</a>
+                                <a href="${it.item.kakaku || '#'}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-kakaku">価格.com ↗</a>
+                            </div>
                         `}
                     </div>
                 </div>
             `).join('');
+
+            // Contextual Desk Upgrade Recommendations
+            const spec = collectedAnswers.spec || {};
+            const vibe = collectedAnswers.vibe || {};
+            const chassisVibe = vibe.chassis_vibe || 'wood_craft';
+            const monStyle = vibe.monitor_style || 'curved_wide';
+            const workload = spec.workload || 'office_daily';
+
+            // 1. Desk match
+            let deskItem = deskUpgradeRecommendationsDB.desk.wood_craft;
+            if (chassisVibe === 'glass_rgb') deskItem = deskUpgradeRecommendationsDB.desk.glass_rgb;
+            else if (chassisVibe === 'clean_white') deskItem = deskUpgradeRecommendationsDB.desk.clean_white;
+
+            // 2. Monitor Arm match
+            let armItem = deskUpgradeRecommendationsDB.arm.single;
+            if (monStyle === 'dual_portrait') armItem = deskUpgradeRecommendationsDB.arm.dual;
+            else if (chassisVibe === 'clean_white') armItem = deskUpgradeRecommendationsDB.arm.white;
+
+            // 3. Chair or Gear match
+            let gearItem = deskUpgradeRecommendationsDB.chair_or_gear.office;
+            if (workload === 'gaming') gearItem = deskUpgradeRecommendationsDB.chair_or_gear.fps;
+            else if (workload === 'creator_3d' || workload === 'ai_llm') gearItem = deskUpgradeRecommendationsDB.chair_or_gear.creator;
+
+            const upgradeItems = [deskItem, armItem, gearItem];
+            const upgradeEl = document.getElementById("upgrade-items-grid");
+            if (upgradeEl) {
+                upgradeEl.innerHTML = upgradeItems.map(item => `
+                    <div class="upgrade-card">
+                        <div>
+                            <div class="upgrade-card-tag">${item.tag}</div>
+                            <h4 class="upgrade-card-name">${item.name}</h4>
+                            <div class="upgrade-card-price">実勢目安: ${item.priceText}</div>
+                            <div class="upgrade-card-spec">${item.deepSpecs}</div>
+                            <p class="upgrade-card-desc">${item.desc}</p>
+                        </div>
+                        <div class="shop-links-row">
+                            <a href="${item.amazon}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-amazon">Amazon ↗</a>
+                            <a href="${item.rakuten}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-rakuten">楽天市場 ↗</a>
+                            <a href="${item.kakaku}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-kakaku">価格.com ↗</a>
+                        </div>
+                    </div>
+                `).join('');
+            }
 
             // Reveal User Feedback Card
             const fbCard = document.getElementById("feedback-section-card");
