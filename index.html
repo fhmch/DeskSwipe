@@ -4391,10 +4391,10 @@
         // 3. discord_webhook: "DiscordのチャンネルウェブフックURL" (Discordへ即時通知)
         // 4. gas_endpoint: "Google Apps ScriptのウェブアプリURL" (Googleスプレッドシートへ自動蓄積)
         const FEEDBACK_CONFIG = {
-            web3forms_key: "", // 例: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-            formsubmit_email: "", // 例: "your-email@example.com"
-            discord_webhook: "", // 例: "https://discord.com/api/webhooks/..."
-            gas_endpoint: "" // 例: "https://script.google.com/macros/s/..."
+            web3forms_key: "",
+            formsubmit_token: "hamauchi0204@gmail.com", // 有効化後にランダムトークンへ置換してメールアドレスを完全隠蔽
+            discord_webhook: "",
+            gas_endpoint: ""
         };
 
         let currentFeedbackRating = 5;
@@ -4482,8 +4482,8 @@
                             "送信日時": nowTime
                         })
                     });
-                } else if (FEEDBACK_CONFIG.formsubmit_email) {
-                    await fetch(`https://formsubmit.co/ajax/${FEEDBACK_CONFIG.formsubmit_email}`, {
+                } else if (FEEDBACK_CONFIG.formsubmit_token) {
+                    await fetch(`https://formsubmit.co/ajax/${FEEDBACK_CONFIG.formsubmit_token}`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json", "Accept": "application/json" },
                         body: JSON.stringify({
