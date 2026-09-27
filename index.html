@@ -1776,12 +1776,23 @@
             color: #000;
         }
 
-        /* Desk Upgrade Pack Styles */
+        /* Persistent Desk Upgrade Pack Container */
+        .upgrade-section-container {
+            background: rgba(13, 17, 26, 0.95);
+            border: 1.5px solid rgba(251, 191, 36, 0.3);
+            border-radius: 22px;
+            padding: 22px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            text-align: left;
+            animation: fadeIn 0.4s ease forwards;
+        }
         .upgrade-section-header {
-            margin-top: 24px;
-            margin-bottom: 14px;
-            padding-top: 18px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
         .upgrade-badge {
             font-family: 'JetBrains Mono', monospace;
@@ -1795,21 +1806,21 @@
             letter-spacing: 0.5px;
         }
         .upgrade-title {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 800;
             color: #fff;
             margin-top: 6px;
         }
         .upgrade-subtitle {
-            font-size: 0.74rem;
+            font-size: 0.76rem;
             color: var(--text-secondary);
-            margin-top: 2px;
+            margin-top: 4px;
+            line-height: 1.4;
         }
         .upgrade-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 14px;
         }
         @media (min-width: 860px) {
             .upgrade-grid {
@@ -1817,7 +1828,7 @@
             }
         }
         .upgrade-card {
-            background: linear-gradient(135deg, rgba(16, 22, 36, 0.9) 0%, rgba(10, 14, 24, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(16, 22, 36, 0.95) 0%, rgba(10, 14, 24, 0.95) 100%);
             border: 1px solid rgba(0, 240, 255, 0.2);
             border-radius: 16px;
             padding: 16px;
@@ -1832,11 +1843,29 @@
             transform: translateY(-2px);
         }
         .upgrade-card-tag {
-            font-size: 0.65rem;
-            font-weight: 800;
+            font-size: 0.68rem;
+            font-weight: 900;
             color: var(--cyan);
             letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+        }
+        .upgrade-media-box {
+            width: 100%;
+            height: 130px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #04060c;
+        }
+        .upgrade-media-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .upgrade-card:hover .upgrade-media-box img {
+            transform: scale(1.04);
         }
         .upgrade-card-name {
             font-size: 0.88rem;
@@ -2035,9 +2064,16 @@
             border-radius: 14px;
             padding: 12px 14px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
+            flex-direction: column;
+            gap: 10px;
+        }
+        @media (min-width: 600px) {
+            .report-card-item {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+            }
         }
         .report-card-name { font-size: 0.85rem; font-weight: 800; color: #fff; }
         .report-card-price { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--cyber-gold); font-weight: 700; }
@@ -2080,15 +2116,9 @@
             </div>
         </div>
         <div class="header-actions">
-            <button class="btn-share-x" id="btn-header-share-x" style="display:none;" onclick="shareToX()">
-                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                Xで共有
-            </button>
-            <button class="btn-save-canvas" id="btn-header-export-img" style="display:none;padding:6px 12px;font-size:0.74rem;" onclick="exportBuildCardImage()">画像を保存</button>
-            <button class="btn-share-url" id="btn-header-share-url" style="display:none;" onclick="shareCurrentBuildUrl()">URLコピー</button>
             <button class="btn-history-toggle" onclick="openHistoryModal()">履歴・比較 (<span id="history-count">0</span>)</button>
             <button class="btn-reset-safe" onclick="confirmResetAll()">最初からやり直す</button>
-            <button class="sound-btn" id="sound-btn" onclick="toggleAudio()" title="効果音のON/OFF">🔊 サウンド [ON]</button>
+            <button class="sound-btn" id="sound-btn" onclick="toggleAudio()" title="効果音のON/OFF">🔇 サウンド [OFF]</button>
         </div>
     </header>
 
@@ -2414,15 +2444,19 @@
 
             <div class="report-list" id="report-list"></div>
 
-            <!-- DESK UPGRADE PACK (PERIPHERALS & FURNITURE) -->
+            <button class="btn-reset-safe" style="width:100%;margin-top:14px;padding:12px;" onclick="confirmResetAll()">診断に戻る</button>
+        </div>
+
+        <!-- ==================================================== -->
+        <!-- 3.5. PERSISTENT DESK UPGRADE PACK (Always Visible Post-Diagnosis) -->
+        <!-- ==================================================== -->
+        <div class="upgrade-section-container" id="desk-upgrade-section" style="display:none;">
             <div class="upgrade-section-header">
                 <span class="upgrade-badge">DESK UPGRADE PACK</span>
                 <h3 class="upgrade-title">デスク空間アップグレード推奨（周辺環境・家具）</h3>
                 <p class="upgrade-subtitle">選択されたスタイルと用途に最適な電動昇降デスク、高剛性モニターアーム、作業効率化ギアの推奨セットです。</p>
             </div>
             <div class="upgrade-grid" id="upgrade-items-grid"></div>
-
-            <button class="btn-reset-safe" style="width:100%;margin-top:14px;padding:12px;" onclick="confirmResetAll()">診断に戻る</button>
         </div>
 
         <!-- ==================================================== -->
@@ -2568,7 +2602,7 @@
         let activeInspectorCategory = null;
         let activeInspectorCandidates = [];
         let isTransitioning = false;
-        let audioEnabled = true;
+        let audioEnabled = false;
 
         // Sound Synthesizer
         let audioCtx = null;
@@ -2843,6 +2877,7 @@
             desk: {
                 wood_craft: {
                     name: "FLEXISPOT E7 (天然木ウォールナット無垢天板 140×70cm)",
+                    img: "assets/upgrade_desk_flexispot.jpg",
                     tag: "空間拡張 • 電動昇降デスク",
                     priceText: "¥58,000",
                     priceVal: 58000,
@@ -2854,6 +2889,7 @@
                 },
                 glass_rgb: {
                     name: "FLEXISPOT E7 Pro (カーブエッジ マットブラック天板 160×70cm)",
+                    img: "assets/upgrade_desk_rgb.jpg",
                     tag: "空間拡張 • 電動昇降デスク",
                     priceText: "¥62,000",
                     priceVal: 62000,
@@ -2865,6 +2901,7 @@
                 },
                 clean_white: {
                     name: "FLEXISPOT Q8 (ピュアホワイト天板 ワイヤレス充電内蔵)",
+                    img: "assets/upgrade_desk_white.jpg",
                     tag: "空間拡張 • 電動昇降デスク",
                     priceText: "¥68,000",
                     priceVal: 68000,
@@ -2878,6 +2915,7 @@
             arm: {
                 dual: {
                     name: "エルゴトロン LX デュアル ダイレクトアーム (マットブラック/ホワイト)",
+                    img: "assets/upgrade_arm_dual.jpg",
                     tag: "疲労軽減 • 高剛性モニターアーム",
                     priceText: "¥38,500",
                     priceVal: 38500,
@@ -2889,6 +2927,7 @@
                 },
                 white: {
                     name: "エルゴトロン LX デスクマウントアーム (ホワイト/アルミニウム)",
+                    img: "assets/upgrade_arm_white.jpg",
                     tag: "疲労軽減 • 高剛性モニターアーム",
                     priceText: "¥23,500",
                     priceVal: 23500,
@@ -2900,6 +2939,7 @@
                 },
                 single: {
                     name: "エルゴトロン LX デスクマウントアーム (マットブラック)",
+                    img: "assets/upgrade_arm_single.jpg",
                     tag: "疲労軽減 • 高剛性モニターアーム",
                     priceText: "¥22,800",
                     priceVal: 22800,
@@ -2913,6 +2953,7 @@
             chair_or_gear: {
                 fps: {
                     name: "Logicool G PRO X SUPERLIGHT 2 ＋ Artisan 零 ゲーミングマット",
+                    img: "assets/upgrade_gear_mouse.jpg",
                     tag: "勝率向上 • 超高精度マウス＆マット",
                     priceText: "¥25,400",
                     priceVal: 25400,
@@ -2924,6 +2965,7 @@
                 },
                 office: {
                     name: "COFO Chair Pro (高機能エルゴノミクス メッシュチェア)",
+                    img: "assets/upgrade_gear_chair.jpg",
                     tag: "健康維持 • 疲労軽減ワークチェア",
                     priceText: "¥39,800",
                     priceVal: 39800,
@@ -2935,6 +2977,7 @@
                 },
                 creator: {
                     name: "BenQ ScreenBar Halo (無線リモコン・間接照明付モニターライト)",
+                    img: "assets/upgrade_gear_creator.jpg",
                     tag: "アイケア • 画面映り込みゼロ照明",
                     priceText: "¥22,900",
                     priceVal: 22900,
@@ -3881,6 +3924,7 @@
                     </div>
                 </div>
             `;
+            renderDeskUpgrades();
         }
 
         function setCategoryFilter(catKey, filterKey) {
@@ -3897,6 +3941,10 @@
             document.getElementById("canvas-section").style.display = "none";
             document.getElementById("grand-report-panel").style.display = "none";
             document.getElementById("workspace-panel").style.display = "block";
+            const deskSec = document.getElementById("desk-upgrade-section");
+            if (deskSec) deskSec.style.display = "none";
+            const fbCard = document.getElementById("feedback-section-card");
+            if (fbCard) fbCard.style.display = "none";
             
             const btnShareX = document.getElementById("btn-header-share-x");
             if (btnShareX) btnShareX.style.display = "none";
@@ -4154,6 +4202,10 @@
                 document.getElementById("canvas-section").style.display = "none";
                 document.getElementById("grand-report-panel").style.display = "none";
                 document.getElementById("workspace-panel").style.display = "block";
+                const deskSec = document.getElementById("desk-upgrade-section");
+                if (deskSec) deskSec.style.display = "none";
+                const fbCard = document.getElementById("feedback-section-card");
+                if (fbCard) fbCard.style.display = "none";
                 renderCurrentQuestion();
                 playSound('select');
             }
@@ -4269,7 +4321,11 @@
                 </div>
             `).join('');
 
-            // Contextual Desk Upgrade Recommendations
+            // Contextual Desk Upgrade Recommendations & Feedback
+            renderDeskUpgrades();
+        }
+
+        function renderDeskUpgrades() {
             const spec = collectedAnswers.spec || {};
             const vibe = collectedAnswers.vibe || {};
             const chassisVibe = vibe.chassis_vibe || 'wood_craft';
@@ -4298,6 +4354,11 @@
                     <div class="upgrade-card">
                         <div>
                             <div class="upgrade-card-tag">${item.tag}</div>
+                            ${item.img ? `
+                                <div class="upgrade-media-box">
+                                    <img src="${item.img}" alt="${item.name}" loading="lazy">
+                                </div>
+                            ` : ''}
                             <h4 class="upgrade-card-name">${item.name}</h4>
                             <div class="upgrade-card-price">実勢目安: ${item.priceText}</div>
                             <div class="upgrade-card-spec">${item.deepSpecs}</div>
@@ -4312,9 +4373,13 @@
                 `).join('');
             }
 
+            const deskSec = document.getElementById("desk-upgrade-section");
+            if (deskSec) deskSec.style.display = "block";
+
             // Reveal User Feedback Card
             const fbCard = document.getElementById("feedback-section-card");
             if (fbCard) fbCard.style.display = "block";
+        }
         }
 
         // ========================================================
