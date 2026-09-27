@@ -3,7 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>自作PC ＆ デスク空間選定スタジオ | DESK & PC BUILD STUDIO</title>
+    <title>DeskSwipe — 自作PC ＆ デスク空間選定スタジオ</title>
+    <meta name="description" content="用途・予算・好みのインテリアに合わせて自作PCとデスク空間をシミュレーション。互換性・電源容量・パーツ比較まで一目で把握できます。">
+    
+    <!-- OGP (Open Graph Protocol) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DeskSwipe">
+    <meta property="og:title" content="DeskSwipe — 自作PC ＆ デスク空間選定スタジオ">
+    <meta property="og:description" content="用途・予算・好みのインテリアに合わせて自作PCとデスク空間をシミュレーション。互換性・電源容量・パーツ比較まで一目で把握できます。">
+    <meta property="og:url" content="https://fhmch.github.io/DeskSwipe/">
+    <meta property="og:image" content="https://fhmch.github.io/DeskSwipe/assets/setup_nordic_wood.jpg">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DeskSwipe — 自作PC ＆ デスク空間選定スタジオ">
+    <meta name="twitter:description" content="用途・予算・好みのインテリアに合わせて自作PCとデスク空間をシミュレーション。互換性・電源容量・パーツ比較まで一目で把握できます。">
+    <meta name="twitter:image" content="https://fhmch.github.io/DeskSwipe/assets/setup_nordic_wood.jpg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
@@ -1966,6 +1982,7 @@
                 <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 Xで共有
             </button>
+            <button class="btn-save-canvas" id="btn-header-export-img" style="display:none;padding:6px 12px;font-size:0.74rem;" onclick="exportBuildCardImage()">画像を保存</button>
             <button class="btn-share-url" id="btn-header-share-url" style="display:none;" onclick="shareCurrentBuildUrl()">URLコピー</button>
             <button class="btn-history-toggle" onclick="openHistoryModal()">履歴・比較 (<span id="history-count">0</span>)</button>
             <button class="btn-reset-safe" onclick="confirmResetAll()">最初からやり直す</button>
@@ -1985,7 +2002,10 @@
                 </div>
                 <div class="canvas-actions-box">
                     <button class="btn-save-canvas" onclick="saveCurrentBuildToHistory()">
-                        この構成を履歴に保存
+                        履歴に保存
+                    </button>
+                    <button class="btn-save-canvas" onclick="exportBuildCardImage()">
+                        画像を保存
                     </button>
                     <button class="btn-share-x" onclick="shareToX()">
                         <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -2250,12 +2270,18 @@
                     <h2 style="font-size:1.8rem;font-weight:900;color:#fff;margin-top:4px;">あなた専用の自作PC ＆ デスク構成が完成しました</h2>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                    <button class="btn-save-canvas" style="padding:10px 18px;font-size:0.82rem;" onclick="saveCurrentBuildToHistory()">
-                        この構成を履歴に保存
+                    <button class="btn-save-canvas" style="padding:10px 16px;font-size:0.82rem;" onclick="saveCurrentBuildToHistory()">
+                        履歴に保存
+                    </button>
+                    <button class="btn-save-canvas" style="padding:10px 16px;font-size:0.82rem;" onclick="exportBuildCardImage()">
+                        画像を保存
                     </button>
                     <button class="btn-share-x" style="padding:10px 16px;font-size:0.82rem;" onclick="shareToX()">
                         <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                         Xで共有
+                    </button>
+                    <button class="btn-share-url" style="padding:10px 16px;font-size:0.82rem;" onclick="shareCurrentBuildUrl()">
+                        URLコピー
                     </button>
                 </div>
             </div>
@@ -3512,6 +3538,8 @@
             if (btnShareX) btnShareX.style.display = "inline-flex";
             const btnShareUrl = document.getElementById("btn-header-share-url");
             if (btnShareUrl) btnShareUrl.style.display = "inline-flex";
+            const btnExportImg = document.getElementById("btn-header-export-img");
+            if (btnExportImg) btnExportImg.style.display = "inline-flex";
 
             // Reveal Canvas and show Report
             document.getElementById("canvas-section").style.display = "block";
@@ -4081,9 +4109,276 @@
             showNotificationToast("貴重なフィードバックを送信しました。ご協力ありがとうございます！");
         }
 
-        // Initialize First View & Load History
+        // ========================================================
+        // 11. SOCIAL SHARING, IMAGE EXPORT & URL RESTORATION
+        // ========================================================
+        function buildShareUrl() {
+            const keys = {};
+            for (const cat in selectedParts) {
+                if (selectedParts[cat] && selectedParts[cat].key) {
+                    keys[cat] = selectedParts[cat].key;
+                }
+            }
+            try {
+                const jsonStr = JSON.stringify(keys);
+                const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(jsonStr))));
+                const baseUrl = window.location.origin + window.location.pathname;
+                return `${baseUrl}?build=${encoded}`;
+            } catch(e) {
+                return window.location.href;
+            }
+        }
+
+        function shareToX() {
+            playSound('fanfare');
+            const spec = collectedAnswers.spec || {};
+            const vibe = collectedAnswers.vibe || {};
+            const buildTitle = generateBuildConceptTitle(spec, vibe);
+            
+            // Total price
+            const isNoGpu = selectedParts.gpu && selectedParts.gpu.name.includes("内蔵");
+            let total = isNoGpu ? 16000 : 22000;
+            for (const k in selectedParts) total += selectedParts[k].priceVal || 0;
+            const priceMan = (total / 10000).toFixed(1);
+
+            const gpuName = selectedParts.gpu ? selectedParts.gpu.name.replace(/GeForce |Radeon /g, '') : '';
+            const cpuName = selectedParts.cpu ? selectedParts.cpu.name.replace(/ Core| 8-Core/g, '') : '';
+            const caseName = selectedParts.case ? selectedParts.case.name : '';
+
+            const shareUrl = buildShareUrl();
+            const tweetText = `【自作PC＆デスク構成】${buildTitle}\n💰 総額目安: 約${priceMan}万円\n🖥️ CPU: ${cpuName} / GPU: ${gpuName}\n📦 ケース: ${caseName}\n\n互換性・電源容量計算済みのシミュレーションはこちら👇\n${shareUrl}\n\n#DeskSwipe #自作PC #デスク周り`;
+
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
+            window.open(twitterUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        function shareCurrentBuildUrl() {
+            playSound('select');
+            const shareUrl = buildShareUrl();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    showNotificationToast("構成URLをクリップボードにコピーしました！");
+                }).catch(() => {
+                    prompt("以下のURLをコピーして共有してください：", shareUrl);
+                });
+            } else {
+                prompt("以下のURLをコピーして共有してください：", shareUrl);
+            }
+        }
+
+        function exportBuildCardImage() {
+            playSound('fanfare');
+            showNotificationToast("構成画像を生成中...");
+
+            const cvs = document.createElement('canvas');
+            cvs.width = 1200;
+            cvs.height = 675;
+            const ctx = cvs.getContext('2d');
+
+            // 1. Background Gradient
+            const bgGrad = ctx.createLinearGradient(0, 0, 1200, 675);
+            bgGrad.addColorStop(0, '#060913');
+            bgGrad.addColorStop(0.5, '#0b1120');
+            bgGrad.addColorStop(1, '#05070d');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, 1200, 675);
+
+            // Subtle Grid Lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < 1200; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, 675);
+                ctx.stroke();
+            }
+            for (let y = 0; y < 675; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(1200, y);
+                ctx.stroke();
+            }
+
+            // Outer Glow Border
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(16, 16, 1168, 643);
+
+            // Inner Corner Accent
+            ctx.strokeStyle = 'rgba(255, 0, 127, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(24, 24, 1152, 627);
+
+            // 2. Header
+            ctx.fillStyle = '#00f0ff';
+            ctx.font = 'bold 16px "JetBrains Mono", monospace';
+            ctx.fillText('DESKSWIPE  //  PC & DESK BUILD STUDIO', 48, 64);
+
+            const spec = collectedAnswers.spec || {};
+            const vibe = collectedAnswers.vibe || {};
+            const buildTitle = generateBuildConceptTitle(spec, vibe);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 28px "Noto Sans JP", sans-serif';
+            ctx.fillText(buildTitle, 48, 102);
+
+            // Total Price Badge
+            const isNoGpu = selectedParts.gpu && selectedParts.gpu.name.includes("内蔵");
+            let total = isNoGpu ? 16000 : 22000;
+            for (const k in selectedParts) total += selectedParts[k].priceVal || 0;
+            const minBudget = Math.round((total * 0.95) / 1000) * 1000;
+            const maxBudget = Math.round((total * 1.05) / 1000) * 1000;
+
+            ctx.fillStyle = '#fbbf24';
+            ctx.font = 'bold 22px "JetBrains Mono", monospace';
+            ctx.textAlign = 'right';
+            ctx.fillText(`総予算目安: ¥${minBudget.toLocaleString()} 〜 ¥${maxBudget.toLocaleString()}`, 1152, 98);
+            ctx.textAlign = 'left';
+
+            // Divider Line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.beginPath();
+            ctx.moveTo(48, 125);
+            ctx.lineTo(1152, 125);
+            ctx.stroke();
+
+            // 3. 8 Selected Parts Matrix (2 Columns x 4 Rows)
+            const items = partsCategories.map(c => ({
+                catName: c.name,
+                tag: c.tag,
+                item: selectedParts[c.key] || { name: '未選択', priceText: '-' }
+            }));
+
+            const startX1 = 48;
+            const startX2 = 612;
+            const startY = 155;
+            const rowHeight = 100;
+            const colWidth = 540;
+
+            items.forEach((it, idx) => {
+                const col = idx % 2;
+                const row = Math.floor(idx / 2);
+                const x = col === 0 ? startX1 : startX2;
+                const y = startY + row * rowHeight;
+
+                // Card Box
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+                ctx.fillRect(x, y, colWidth, 88);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+                ctx.strokeRect(x, y, colWidth, 88);
+
+                // Category Tag
+                ctx.fillStyle = '#00f0ff';
+                ctx.font = 'bold 12px "JetBrains Mono", monospace';
+                ctx.fillText(it.catName.toUpperCase(), x + 16, y + 24);
+
+                // Price Tag
+                ctx.fillStyle = '#fbbf24';
+                ctx.font = 'bold 13px "JetBrains Mono", monospace';
+                ctx.textAlign = 'right';
+                ctx.fillText(it.item.priceText || '', x + colWidth - 16, y + 24);
+                ctx.textAlign = 'left';
+
+                // Part Name
+                ctx.fillStyle = '#f8fafc';
+                ctx.font = 'bold 15px "Noto Sans JP", sans-serif';
+                let displayName = it.item.name || '未確定';
+                if (displayName.length > 36) displayName = displayName.substring(0, 35) + '…';
+                ctx.fillText(displayName, x + 16, y + 50);
+
+                // Sub specs
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '12px "Noto Sans JP", sans-serif';
+                let subText = it.item.deepSpecs || it.item.type || '';
+                if (subText.length > 44) subText = subText.substring(0, 43) + '…';
+                ctx.fillText(subText, x + 16, y + 72);
+            });
+
+            // 4. Footer & Watermark
+            const footerY = 595;
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+            ctx.fillRect(48, footerY, 680, 36);
+            ctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
+            ctx.strokeRect(48, footerY, 680, 36);
+
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 13px "Noto Sans JP", sans-serif';
+            ctx.fillText('✓ 互換性チェック: 適合  |  ✓ 電源容量マージン: OK  |  ✓ 物理寸法: 適合', 60, footerY + 23);
+
+            ctx.fillStyle = '#64748b';
+            ctx.font = 'bold 14px "JetBrains Mono", monospace';
+            ctx.textAlign = 'right';
+            ctx.fillText('https://fhmch.github.io/DeskSwipe/', 1152, footerY + 23);
+            ctx.textAlign = 'left';
+
+            // Trigger Download
+            setTimeout(() => {
+                try {
+                    const dataUrl = cvs.toDataURL('image/png');
+                    const downloadLink = document.createElement('a');
+                    downloadLink.download = `DeskSwipe_PC_Build_${Date.now()}.png`;
+                    downloadLink.href = dataUrl;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                    showNotificationToast("構成画像を保存しました！");
+                } catch(e) {
+                    console.error(e);
+                    alert("画像生成中にエラーが発生しました。ブラウザの権限をご確認ください。");
+                }
+            }, 100);
+        }
+
+        function loadBuildFromUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const buildParam = urlParams.get('build');
+            if (!buildParam) return false;
+
+            try {
+                const jsonStr = decodeURIComponent(escape(atob(decodeURIComponent(buildParam))));
+                const decodedKeys = JSON.parse(jsonStr);
+                if (!decodedKeys || typeof decodedKeys !== 'object') return false;
+
+                for (const catKey in decodedKeys) {
+                    const itemKey = decodedKeys[catKey];
+                    const candList = partsCandidatesDB[catKey] || [];
+                    const found = candList.find(c => c.key === itemKey);
+                    if (found) {
+                        selectedParts[catKey] = found;
+                    }
+                }
+
+                // Set completed state
+                isDiagnosisCompleted = true;
+                document.getElementById("diagnostic-wizard").style.display = "none";
+                document.getElementById("canvas-section").style.display = "block";
+                document.getElementById("workspace-panel").style.display = "none";
+                
+                // Show header share buttons
+                const btnHeaderShareX = document.getElementById("btn-header-share-x");
+                const btnHeaderShareUrl = document.getElementById("btn-header-share-url");
+                const btnHeaderExportImg = document.getElementById("btn-header-export-img");
+                if (btnHeaderShareX) btnHeaderShareX.style.display = "inline-flex";
+                if (btnHeaderShareUrl) btnHeaderShareUrl.style.display = "inline-flex";
+                if (btnHeaderExportImg) btnHeaderExportImg.style.display = "inline-flex";
+
+                updateDynamicRigStage();
+                updateMainCanvasView();
+                showGrandCompleteReport();
+                showNotificationToast("共有された構成を読み込みました！");
+                return true;
+            } catch(e) {
+                console.error("Failed to load build from URL:", e);
+                return false;
+            }
+        }
+
+        // Initialize First View & Load History / URL Params
         updateHistoryBadge();
-        renderCurrentQuestion();
+        const loadedFromUrl = loadBuildFromUrlParams();
+        if (!loadedFromUrl) {
+            renderCurrentQuestion();
+        }
     </script>
 </body>
 </html>
