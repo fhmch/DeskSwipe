@@ -1,0 +1,14 @@
+# Environment & Secrets (Never commit .env to public repos)
+.env
+*.env.local
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
