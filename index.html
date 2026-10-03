@@ -472,6 +472,122 @@
             transform: translateY(-1px);
         }
 
+        /* ==================================================== */
+        /* 0.5. SITE FOOTER & LEGAL MODAL                       */
+        /* ==================================================== */
+        .site-footer {
+            margin-top: 40px;
+            padding: 24px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .footer-link-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.76rem;
+            cursor: pointer;
+            padding: 4px 6px;
+            transition: color 0.2s ease;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .footer-link-btn:hover {
+            color: var(--cyan);
+        }
+        .footer-divider {
+            color: var(--text-tertiary);
+            font-size: 0.7rem;
+        }
+        .footer-copy {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            letter-spacing: 0.5px;
+        }
+
+        .legal-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .legal-modal-content {
+            background: #0d121f;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 20px;
+            max-width: 680px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.15);
+            position: relative;
+        }
+        .legal-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+        }
+        .legal-modal-title {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #fff;
+        }
+        .legal-modal-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: background 0.2s ease;
+        }
+        .legal-modal-close:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .legal-modal-body {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.75;
+        }
+        .legal-modal-body h4 {
+            color: var(--cyan);
+            font-size: 0.92rem;
+            margin: 16px 0 6px 0;
+            font-weight: 800;
+        }
+        .legal-modal-body p {
+            margin-bottom: 12px;
+        }
+        .legal-modal-body ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+        .legal-modal-body li {
+            margin-bottom: 4px;
+        }
+
         .app-container {
             width: 100%;
             max-width: 1200px;
@@ -2499,6 +2615,37 @@
                 <div style="font-size:1.1rem;font-weight:900;color:var(--cyan);margin-bottom:4px;">貴重なご意見ありがとうございます</div>
                 <p style="font-size:0.78rem;color:var(--text-secondary);">いただいたフィードバックは今後のパーツカタログ拡充・システム改善に活用させていただきます。</p>
             </div>
+        </div>
+
+        <!-- ==================================================== -->
+        <!-- 5. SITE FOOTER                                       -->
+        <!-- ==================================================== -->
+        <footer class="site-footer">
+            <div class="footer-links">
+                <button type="button" class="footer-link-btn" onclick="openLegalModal('about')">DeskSwipeについて</button>
+                <span class="footer-divider">•</span>
+                <button type="button" class="footer-link-btn" onclick="openLegalModal('privacy')">プライバシーポリシー</button>
+                <span class="footer-divider">•</span>
+                <button type="button" class="footer-link-btn" onclick="openLegalModal('disclaimer')">免責事項</button>
+                <span class="footer-divider">•</span>
+                <button type="button" class="footer-link-btn" onclick="openLegalModal('contact')">お問い合わせ</button>
+            </div>
+            <div class="footer-copy">
+                &copy; 2026 DeskSwipe. All rights reserved.
+            </div>
+        </footer>
+    </div>
+
+    <!-- ==================================================== -->
+    <!-- 6. LEGAL & PRIVACY MODAL DIALOG                      -->
+    <!-- ==================================================== -->
+    <div class="legal-modal-overlay" id="legal-modal-overlay" onclick="closeLegalModal()">
+        <div class="legal-modal-content" onclick="event.stopPropagation()">
+            <div class="legal-modal-header">
+                <h3 class="legal-modal-title" id="legal-modal-title">規約・ポリシー</h3>
+                <button class="legal-modal-close" onclick="closeLegalModal()" title="閉じる">✕</button>
+            </div>
+            <div class="legal-modal-body" id="legal-modal-body"></div>
         </div>
     </div>
 
@@ -4786,6 +4933,64 @@
                 console.error("Failed to load build from URL:", e);
                 return false;
             }
+        }
+
+        function openLegalModal(tab) {
+            playSound('select');
+            const overlay = document.getElementById("legal-modal-overlay");
+            const titleEl = document.getElementById("legal-modal-title");
+            const bodyEl = document.getElementById("legal-modal-body");
+            if (!overlay || !titleEl || !bodyEl) return;
+
+            if (tab === 'privacy') {
+                titleEl.innerText = "プライバシーポリシー";
+                bodyEl.innerHTML = `
+                    <h4>1. 個人情報の収集および利用について</h4>
+                    <p>当サイト（DeskSwipe）では、お問い合わせやフィードバック送信時に任意の入力情報（評価・ご意見）を取得する場合があります。取得した情報はサービスの改善目的にのみ使用し、第三者に提供・開示することはありません。</p>
+                    
+                    <h4>2. 広告配信およびアフィリエイトプログラムについて</h4>
+                    <p>当サイトでは、第三者配信の広告サービスおよび各種アフィリエイトプログラム（バリューコマース、もしもアフィリエイト、A8.net、楽天アフィリエイト、Amazonアソシエイト等）を利用しています。これらの広告配信事業者は、ユーザーの興味に応じた商品やサービスの広告を表示するため、当サイトや他サイトへのアクセスに関する情報（Cookie）を使用することがあります。</p>
+                    
+                    <h4>3. アクセス解析ツールの利用について</h4>
+                    <p>当サイトでは、トラフィックデータの収集のためにCookieを使用しています。このデータは匿名で収集されており、個人を特定するものではありません。ブラウザの設定によりCookieを無効にすることで、収集を拒否することが可能です。</p>
+                `;
+            } else if (tab === 'disclaimer') {
+                titleEl.innerText = "免責事項";
+                bodyEl.innerHTML = `
+                    <h4>1. 掲載情報の正確性について</h4>
+                    <p>当サイトに掲載されているPCパーツの仕様、価格目安、互換性情報については、可能な限り正確な情報を掲載するよう努めておりますが、正確性や安全性を完全に保証するものではありません。</p>
+                    
+                    <h4>2. 商品購入および互換性の確認について</h4>
+                    <p>PCパーツの価格や在庫状況は各ECモール（Amazon、楽天市場、Yahoo!ショッピング、価格.com等）において常時変動します。また、PCケース内の配線クリアランスやマザーボードのBIOSバージョン等の詳細仕様は、ご購入前に必ず各パーツメーカーの公式仕様表をご確認の上、ご自身の責任においてご購入ください。</p>
+                    
+                    <h4>3. 損害等の責任について</h4>
+                    <p>当サイトを利用したことによって生じたトラブルやいかなる損害・損失についても、当サイト管理者は一切の責任を負いかねますのであらかじめご了承ください。</p>
+                `;
+            } else if (tab === 'about') {
+                titleEl.innerText = "DeskSwipe について";
+                bodyEl.innerHTML = `
+                    <h4>サービス概要</h4>
+                    <p>DeskSwipe は、予算・メイン用途（ゲーム・AI開発・オフィスワーク等）・部屋のテイスト（北欧ウッド・ガラスRGB・ピュアホワイト等）を選択するだけで、最適な自作PC構成とデスク周辺機器（昇降デスク・モニターアーム・チェア等）を直感的に診断・提案するWebシミュレーターです。</p>
+                    
+                    <h4>開発・運営方針</h4>
+                    <p>「難解なPCスペック比較を誰でも直感的に楽しく選べるようにする」ことを目指し、実勢価格相場と工学的な選定根拠に基づいたパーツ選定エンジンを継続的にアップデートしています。</p>
+                `;
+            } else if (tab === 'contact') {
+                closeLegalModal();
+                const fbCard = document.getElementById("feedback-section-card");
+                if (fbCard) {
+                    fbCard.style.display = "block";
+                    fbCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
+            overlay.style.display = "flex";
+        }
+
+        function closeLegalModal() {
+            const overlay = document.getElementById("legal-modal-overlay");
+            if (overlay) overlay.style.display = "none";
         }
 
         // Initialize First View & Load History / URL Params
