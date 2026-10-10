@@ -1882,6 +1882,15 @@
             background: #ff4d4d;
             color: #fff;
         }
+        .shop-btn-yahoo {
+            background: rgba(255, 0, 51, 0.15);
+            border: 1px solid rgba(255, 0, 51, 0.4);
+            color: #ff334b;
+        }
+        .shop-btn-yahoo:hover {
+            background: #ff334b;
+            color: #fff;
+        }
         .shop-btn-kakaku {
             background: rgba(0, 114, 206, 0.15);
             border: 1px solid rgba(0, 114, 206, 0.4);
@@ -2633,6 +2642,8 @@
             <div style="font-size:0.68rem;color:var(--text-tertiary);margin-bottom:8px;line-height:1.5;">
                 ※ 当サイトはアフィリエイト広告（Amazonアソシエイト含む）を掲載しています。Amazonのアソシエイトとして、DeskSwipeは適格販売により収入を得ています。
             </div>
+            <img src="//i.moshimo.com/af/i/impression?a_id=5840290&p_id=54&pc_id=54&pl_id=621" width="1" height="1" style="border:none;display:none;" loading="lazy" alt="">
+            <img src="//i.moshimo.com/af/i/impression?a_id=5840291&p_id=1225&pc_id=1925&pl_id=18502" width="1" height="1" style="border:none;display:none;" loading="lazy" alt="">
             <div class="footer-copy">
                 &copy; 2026 DeskSwipe. All rights reserved.
             </div>
@@ -2731,17 +2742,34 @@
             { key: "ram", name: "メモリ & SSD", tag: "RAM & SSD" }
         ];
 
-        // Global Affiliate Tracking Configurations
-        const RAKUTEN_AFFILIATE_ID = "57f37031.ba1da35d.57f37032.782d7851";
+        // Global Affiliate Tracking Configurations (もしもアフィリエイト連携)
+        const MOSHIMO_CONFIG = {
+            rakuten: {
+                a_id: "5840290",
+                p_id: "54",
+                pc_id: "54",
+                pl_id: "621"
+            },
+            yahoo: {
+                a_id: "5840291",
+                p_id: "1225",
+                pc_id: "1925",
+                pl_id: "18502"
+            }
+        };
 
         function getRakutenLink(item) {
-            if (!item) return "https://search.rakuten.co.jp/";
-            if (item.rakuten_affiliate_url) return item.rakuten_affiliate_url;
-            const targetUrl = item.rakuten || `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(item.name || "自作PC パーツ")}/`;
-            if (RAKUTEN_AFFILIATE_ID) {
-                return `https://hb.afl.rakuten.co.jp/hgc/${RAKUTEN_AFFILIATE_ID}/?pc=${encodeURIComponent(targetUrl)}`;
-            }
-            return targetUrl;
+            if (!item) return `https://af.moshimo.com/af/c/click?a_id=${MOSHIMO_CONFIG.rakuten.a_id}&p_id=54&pc_id=54&pl_id=621&url=https%3A%2F%2Fsearch.rakuten.co.jp%2F`;
+            const name = (item.name || "").replace(/\(.*?\)/g, '').replace(/（.*?）/g, '').trim();
+            const targetUrl = item.rakuten || `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(name || "自作PC パーツ")}/`;
+            return `https://af.moshimo.com/af/c/click?a_id=${MOSHIMO_CONFIG.rakuten.a_id}&p_id=${MOSHIMO_CONFIG.rakuten.p_id}&pc_id=${MOSHIMO_CONFIG.rakuten.pc_id}&pl_id=${MOSHIMO_CONFIG.rakuten.pl_id}&url=${encodeURIComponent(targetUrl)}`;
+        }
+
+        function getYahooLink(item) {
+            if (!item) return `https://af.moshimo.com/af/c/click?a_id=${MOSHIMO_CONFIG.yahoo.a_id}&p_id=1225&pc_id=1925&pl_id=18502&url=https%3A%2F%2Fshopping.yahoo.co.jp%2F`;
+            const name = (item.name || "").replace(/\(.*?\)/g, '').replace(/（.*?）/g, '').trim();
+            const targetUrl = `https://shopping.yahoo.co.jp/search?p=${encodeURIComponent(name || "自作PC パーツ")}`;
+            return `https://af.moshimo.com/af/c/click?a_id=${MOSHIMO_CONFIG.yahoo.a_id}&p_id=${MOSHIMO_CONFIG.yahoo.p_id}&pc_id=${MOSHIMO_CONFIG.yahoo.pc_id}&pl_id=${MOSHIMO_CONFIG.yahoo.pl_id}&url=${encodeURIComponent(targetUrl)}`;
         }
 
         // Global State
@@ -4053,9 +4081,9 @@
                                             </div>
                                         ` : `
                                             <div class="shop-links-row">
-                                                <a href="${cand.amazon}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-amazon">Amazon ↗</a>
+                                                <a href="${cand.amazon || '#'}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-amazon">Amazon ↗</a>
                                                 <a href="${getRakutenLink(cand)}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-rakuten">楽天市場 ↗</a>
-                                                <a href="${cand.kakaku}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-kakaku">価格.com ↗</a>
+                                                <a href="${getYahooLink(cand)}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-yahoo">Yahoo! ↗</a>
                                             </div>
                                         `}
                                     </div>
@@ -4464,7 +4492,7 @@
                             <div class="shop-links-row" style="margin-top:0;">
                                 <a href="${it.item.amazon || '#'}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-amazon">Amazon ↗</a>
                                 <a href="${getRakutenLink(it.item)}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-rakuten">楽天市場 ↗</a>
-                                <a href="${it.item.kakaku || '#'}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-kakaku">価格.com ↗</a>
+                                <a href="${getYahooLink(it.item)}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-yahoo">Yahoo! ↗</a>
                             </div>
                         `}
                     </div>
@@ -4516,8 +4544,8 @@
                         </div>
                         <div class="shop-links-row">
                             <a href="${item.amazon}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-amazon">Amazon ↗</a>
-                            <a href="${item.rakuten}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-rakuten">楽天市場 ↗</a>
-                            <a href="${item.kakaku}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-kakaku">価格.com ↗</a>
+                            <a href="${getRakutenLink(item)}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-rakuten">楽天市場 ↗</a>
+                            <a href="${getYahooLink(item)}" target="_blank" rel="noopener noreferrer" class="shop-btn shop-btn-yahoo">Yahoo! ↗</a>
                         </div>
                     </div>
                 `).join('');
