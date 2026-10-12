@@ -2674,6 +2674,79 @@
             </div>
         </div>
 
+        </div>
+
+        <!-- ==================================================== -->
+        <!-- 自作PC＆デスク環境構築 実践ガイド（全5章・審査＆SEO） -->
+        <!-- ==================================================== -->
+        <section style="margin-top: 40px; padding: 30px 24px; border-radius: 20px; background: rgba(13, 17, 26, 0.85); border: 1px solid var(--border-glass);">
+            <div style="text-align: center; margin-bottom: 28px;">
+                <span style="background: rgba(0, 240, 255, 0.12); color: var(--cyan); border: 1px solid rgba(0, 240, 255, 0.3); font-size: 0.68rem; font-weight: 900; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;">PC & DESK KNOWLEDGE BASE</span>
+                <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff; margin-top: 10px;">自作PC＆デスク環境構築 実践ガイド</h3>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); max-width: 600px; margin: 6px auto 0; line-height: 1.6;">
+                    パーツ選定の互換性、電源容量計算、用途別スペック配分から部屋全体のインテリア統一まで、後悔しないPC環境作りのノウハウを徹底解説します。
+                </p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- 第1章 -->
+                <article style="background: rgba(6, 8, 14, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 20px;">
+                    <div style="font-size: 0.68rem; font-weight: 900; color: var(--cyan); margin-bottom: 4px;">第1章：予算別パーツ配分</div>
+                    <h4 style="font-size: 0.95rem; font-weight: 800; color: #fff; margin-bottom: 8px;">
+                        予算10万〜25万円の黄金比率：失敗しない自作PCコスト配分の鉄則
+                    </h4>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 6px;">
+                        自作PCで最も多い失敗は「CPUに予算をかけすぎてGPU（グラフィックボード）が力不足になる」パターンです。ゲームやAI用途では、<strong>総予算の約40%〜50%をGPUに充てる</strong>のが最もフレームレート・処理速度を高める黄金比率です。
+                    </p>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6;">
+                        例えば総額15万円の構成では、GPUに6万円（GeForce RTX 4060等）、CPUに2.5万円（Ryzen 5 7500F / Core i5）、マザーボード・メモリ・SSD・電源・ケースに各1〜1.5万円を配分するのが最もコストパフォーマンスに優れます。
+                    </p>
+                </article>
+
+                <!-- 第2章 -->
+                <article style="background: rgba(6, 8, 14, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 20px;">
+                    <div style="font-size: 0.68rem; font-weight: 900; color: var(--cyan); margin-bottom: 4px;">第2章：CPU×GPUボトルネック</div>
+                    <h4 style="font-size: 0.95rem; font-weight: 800; color: #fff; margin-bottom: 8px;">
+                        ボトルネックを完全回避する：用途別（競技FPS・4K・動画編集・AI生成）の最適コンビ
+                    </h4>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 6px;">
+                        ApexやVALORANTなどの「競技FPSで240Hz張り付き」を狙う場合は、大容量L3キャッシュを搭載した「Ryzen 7 7800X3D」が圧倒的威力を発揮します。低解像度・高フレームレート環境ではCPUのキャッシュ処理能力がボトルネックになるためです。
+                    </p>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6;">
+                        一方、Stable DiffusionやローカルLLMなどの「AI生成」では、GPUの処理性能よりも<strong>「VRAM容量（ビデオメモリ16GB以上）」</strong>が絶対条件となります。RTX 4060 Ti 16GBやRTX 4070 Ti SUPERが選ばれるのはこのためです。
+                    </p>
+                </article>
+
+                <!-- 第3章 -->
+                <article style="background: rgba(6, 8, 14, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 20px;">
+                    <div style="font-size: 0.68rem; font-weight: 900; color: var(--cyan); margin-bottom: 4px;">第3章：電源容量の物理学</div>
+                    <h4 style="font-size: 0.95rem; font-weight: 800; color: #fff; margin-bottom: 8px;">
+                        電源容量（W数）の科学的計算法：なぜ「最大TDPの1.5〜2倍」が必要なのか？
+                    </h4>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 6px;">
+                        PC電源ユニット（PSU）は、<strong>負荷率50%前後のときに変換効率（80 PLUS GOLD等）が最大になり、発熱・ファンの騒音・経年劣化が最小</strong>になります。
+                    </p>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6;">
+                        最新のGPU（RTX 40シリーズなど）は瞬間的に定格の2倍近い電力スパイク（ミリ秒単位の急峻な電力要求）が発生するため、総消費電力350Wのシステムには650W〜750W電源、500Wのシステムには850W電源を選ぶことがクラッシュ防止の必須要件です。
+                    </p>
+                </article>
+
+                <!-- 第4章 -->
+                <article style="background: rgba(6, 8, 14, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 20px;">
+                    <div style="font-size: 0.68rem; font-weight: 900; color: var(--cyan); margin-bottom: 4px;">第4章：空間デザイン統一術</div>
+                    <h4 style="font-size: 0.95rem; font-weight: 800; color: #fff; margin-bottom: 8px;">
+                        デスクツアー映えする空間設計：北欧ウッド・ガラスピラーレス・ホワイトの統一法
+                    </h4>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 6px;">
+                        美しいデスク空間を作る最大のコツは<strong>「素材とテーマカラーを3色以内に絞ること」</strong>です。Fractal Northのような本物ウォールナット木目を採用したケースには、無垢材天板デスクと暖色系間接照明が最もマッチします。
+                    </p>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6;">
+                        NZXT H6やLian Li O11のようなピラーレスパノラマガラスケースには、ARGBファンとサイバー調のRGBバックライトを組み合わせ、配線を天板裏ケーブルトレイに完全隠蔽することでショールームのような完成度を実現できます。
+                    </p>
+                </article>
+            </div>
+        </section>
+
         <!-- ==================================================== -->
         <!-- 5. SITE FOOTER                                       -->
         <!-- ==================================================== -->
