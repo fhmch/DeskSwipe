@@ -4252,12 +4252,12 @@
                 const shareUrl = `${window.location.origin}${window.location.pathname}?build=${partsParam}`;
                 
                 navigator.clipboard.writeText(shareUrl).then(() => {
-                    showNotificationToast("構成URLをクリップボードにコピーしました！SNSや友人に共有できます。");
+                    showNotificationToast("Build URL copied to clipboard! Share it with friends.");
                 }).catch(() => {
-                    prompt("以下のURLをコピーして共有してください：", shareUrl);
+                    prompt("Copy this URL to share your build:", shareUrl);
                 });
             } catch(e) {
-                showNotificationToast("構成URLをコピーしました！");
+                showNotificationToast("Build URL copied!");
             }
         }
 
@@ -4837,12 +4837,12 @@
             const shareUrl = buildShareUrl();
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(shareUrl).then(() => {
-                    showNotificationToast("構成URLをクリップボードにコピーしました！");
+                    showNotificationToast("Build URL copied to clipboard!");
                 }).catch(() => {
-                    prompt("以下のURLをコピーして共有してください：", shareUrl);
+                    prompt("Copy this URL to share your build:", shareUrl);
                 });
             } else {
-                prompt("以下のURLをコピーして共有してください：", shareUrl);
+                prompt("Copy this URL to share your build:", shareUrl);
             }
         }
 
