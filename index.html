@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <!-- Google tag (gtag.js) - GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MF3C6Q42WJ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MF3C6Q42WJ');
+      document.addEventListener('click', function(e) {
+        var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a) return;
+        var href = a.href || '';
+        if (/amazon\.|rakuten\.|yahoo\.|moshimo\.|kakaku\.|newegg\.|bhphotovideo\./i.test(href)) {
+          gtag('event', 'affiliate_click', {
+            link_url: href,
+            link_text: (a.innerText || '').trim().slice(0, 80),
+            page_path: location.pathname
+          });
+        }
+      }, true);
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DeskSwipe｜自作PC＆デスク環境 診断シミュレーター【予算・用途別】</title>
