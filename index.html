@@ -7,6 +7,9 @@
     <meta name="description" content="用途（ゲーム・AI・動画編集・事務）・予算・好みのインテリアに合わせて自作PCとデスク環境を自動選定＆比較シミュレーション。パーツ互換性・電源容量計算・最安価格比較まで一目で把握できます。">
     <meta name="keywords" content="自作PC, 構成, 見積もり, シミュレーター, 診断, ゲーミングPC, デスク環境, デスクツアー, Fractal North, 昇降デスク, 自作PC 初心者, 互換性チェック">
     <link rel="canonical" href="https://fhmch.github.io/DeskSwipe/">
+    <link rel="alternate" hreflang="ja" href="https://fhmch.github.io/DeskSwipe/">
+    <link rel="alternate" hreflang="en" href="https://fhmch.github.io/DeskSwipe/en/">
+    <link rel="alternate" hreflang="x-default" href="https://fhmch.github.io/DeskSwipe/">
     <meta name="google-site-verification" content="d536nA_kytEpTfIoXgrpyWSsg56ak4_C3uykiGik1qM" />
     
     <!-- OGP (Open Graph Protocol) -->
@@ -2579,11 +2582,11 @@
 
             <div class="report-total-box">
                 <div>
-                    <div style="font-size:0.75rem;color:var(--text-secondary);font-weight:700;">総予算（2024-2026年 実勢相場合計）</div>
+                    <div style="font-size:0.75rem;color:var(--text-secondary);font-weight:700;">総予算目安（参考実勢相場・時期により変動）</div>
                     <div class="report-total-val" id="report-total-val">¥0</div>
                 </div>
                 <div style="font-size:0.72rem;color:var(--text-tertiary);text-align:right;">
-                    ※選定パーツ8点＋マザーボード等の合計
+                    ※選定パーツ8点＋マザーボード等の参考相場合計（最新の実売価格は各ショップリンク先にてご確認ください）
                 </div>
             </div>
 
@@ -2742,6 +2745,20 @@
                     </p>
                     <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6;">
                         NZXT H6やLian Li O11のようなピラーレスパノラマガラスケースには、ARGBファンとサイバー調のRGBバックライトを組み合わせ、配線を天板裏ケーブルトレイに完全隠蔽することでショールームのような完成度を実現できます。
+                    </p>
+                </article>
+
+                <!-- 第5章 -->
+                <article style="background: rgba(6, 8, 14, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 20px;">
+                    <div style="font-size: 0.68rem; font-weight: 900; color: var(--cyan); margin-bottom: 4px;">第5章：冷却・エアフローと静音化設計</div>
+                    <h4 style="font-size: 0.95rem; font-weight: 800; color: #fff; margin-bottom: 8px;">
+                        空冷ツインタワー vs 360mm簡易水冷：熱設計電力（TDP）に応じた冷却方式の選び方
+                    </h4>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 6px;">
+                        CPUクーラーの選定は「CPUの最大発熱量（TDP / MTP）」と「メンテナンス性」のバランスで決まります。TDP 65W〜120WクラスのCPU（Core i5やRyzen 7 7800X3D等）であれば、大型サイドフロー空冷（DeepCool AK400やNoctua NH-D15等）で十分な冷却性能とポンプ故障リスクゼロの高い信頼性を両立できます。
+                    </p>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6;">
+                        一方、長時間の4K動画エンコードやAI学習で200W超の連続負荷がかかるCore i7/i9環境や、ピラーレスケース内部の視界をスッキリ見せたい場合は、360mmラジエーター簡易水冷が有効です。また、吸気ファン流量を排気よりわずかに多くする「正圧（ポジティブプレッシャー）設計」にすることで、隙間からのホコリ侵入を防ぎ静音性を長期間維持できます。
                     </p>
                 </article>
             </div>
@@ -5121,13 +5138,20 @@
                     <p>当サイトを利用したことによって生じたトラブルやいかなる損害・損失についても、当サイト管理者は一切の責任を負いかねますのであらかじめご了承ください。</p>
                 `;
             } else if (tab === 'about') {
-                titleEl.innerText = "DeskSwipe について";
+                titleEl.innerText = "運営者情報・サイト運営方針";
                 bodyEl.innerHTML = `
-                    <h4>サービス概要</h4>
-                    <p>DeskSwipe は、予算・メイン用途（ゲーム・AI開発・オフィスワーク等）・部屋のテイスト（北欧ウッド・ガラスRGB・ピュアホワイト等）を選択するだけで、最適な自作PC構成とデスク周辺機器（昇降デスク・モニターアーム・チェア等）を直感的に診断・提案するWebシミュレーターです。</p>
+                    <h4>1. 運営者概要</h4>
+                    <p><strong>サイト名:</strong> DeskSwipe（デスクスワイプ）<br>
+                    <strong>運営組織:</strong> DeskSwipe 開発・運営プロジェクトチーム<br>
+                    <strong>URL:</strong> https://fhmch.github.io/DeskSwipe/<br>
+                    <strong>お問い合わせ:</strong> サイト内フィードバックフォーム または <a href="https://github.com/fhmch/DeskSwipe/issues" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">GitHub Issues</a></p>
+
+                    <h4>2. サイトの目的とコンテンツ方針</h4>
+                    <p>DeskSwipe は、予算・メイン用途（ゲーム・AI開発・クリエイティブ・オフィスワーク等）・部屋のテイスト（北欧ウッド・ガラスRGB・ピュアホワイト等）を選択するだけで、最適な自作PC構成とデスク周辺機器（昇降デスク・モニターアーム・チェア等）を直感的に診断・提案するWebシミュレーターです。<br>
+                    「難解なPCスペック比較を誰でも直感的に楽しく選べるようにする」ことを目指し、ハードウェアの物理寸法（GPU長・ケースクリアランス）や消費電力（TDP・電源容量計算）の工学的根拠に基づいたパーツ選定エンジンを継続的にアップデートしています。</p>
                     
-                    <h4>開発・運営方針</h4>
-                    <p>「難解なPCスペック比較を誰でも直感的に楽しく選べるようにする」ことを目指し、実勢価格相場と工学的な選定根拠に基づいたパーツ選定エンジンを継続的にアップデートしています。</p>
+                    <h4>3. 商品の選定基準および参考相場表記について</h4>
+                    <p>当サイトで紹介するPCパーツ・周辺機器は、メーカー公式スペック、冷却性能、互換性、および市場での実績を総合的に精査して客観的に選定しています。画面上に表示される価格は構成比較のための「参考相場目安」であり、実際の販売価格や在庫状況は各ECショップ（Amazon、楽天市場、Yahoo!ショッピング、価格.com等）のリンク先にてリアルタイムにご確認ください。</p>
                 `;
             } else if (tab === 'contact') {
                 closeLegalModal();
