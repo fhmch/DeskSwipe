@@ -3099,7 +3099,8 @@
                 options: [
                     { key: "glass_rgb", badge: "サイバー要塞", img: visuals.case_glass, title: "ピラーレス2面パノラマガラス ＆ RGBライティング", desc: "角の支柱を完全排除。内部パーツが宙に浮いて見える近未来アートピース。", specs: ["NZXT H6 Flow", "内部ライティング最大演出"] },
                     { key: "wood_craft", badge: "北欧家具調", img: visuals.case_north, title: "本物無垢材スリット ＆ ウォールナット調和", desc: "フロントにオーク/ウォールナット無垢材を採用。木製デスクと完全調和する工芸品。", specs: ["Fractal Design North", "高い通気・煙突効果"] },
-                    { key: "clean_white", badge: "洗練ミニマル", img: visuals.case_white, title: "ピュアホワイト ＆ マットステルス静音", desc: "無駄を削ぎ落としたスタイリッシュなホワイト/ブラックミニマル空間。", specs: ["NZXT H5 Flow / 静音設計"] }
+                    { key: "clean_white", badge: "洗練ミニマル", img: visuals.case_white, title: "ピュアホワイト ＆ マットステルス静音", desc: "無駄を削ぎ落としたスタイリッシュなホワイト/ブラックミニマル空間。", specs: ["NZXT H5 Flow / 静音設計"] },
+                    { key: "compact_itx", badge: "超小型ITX・省スペース", img: visuals.case_terra, title: "超小型アルミ＆ウォルナット省スペースITX", desc: "靴箱サイズの削り出しアルミ×天然木筐体。机の上を広々と使える省スペース工芸品。", specs: ["Fractal Design Terra", "机上設置・省スペース特化"] }
                 ]
             },
             {
@@ -3547,6 +3548,7 @@
             let vibeName = "【北欧無垢材】";
             if (vibeAns.chassis_vibe === 'glass_rgb') vibeName = "【Cyber Neon】";
             else if (vibeAns.chassis_vibe === 'clean_white') vibeName = "【Pure White】";
+            else if (vibeAns.chassis_vibe === 'compact_itx') vibeName = "【超小型ITX Terra】";
 
             let workName = "日常事務 ＆ 高効率10コア構成";
             if (specAns.workload === 'gaming') {
@@ -4051,7 +4053,10 @@
             panel.innerHTML = `
                 ${quickPresetHtml}
                 <div class="wizard-tracker">
-                    <span class="wizard-step-pill">${qData.badge}</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        ${(currentQuestionIdx > 0 || currentPhase === 'vibe') ? `<button type="button" onclick="prevWizardStep()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.22); color:#e2e8f0; padding:4px 10px; border-radius:8px; font-size:0.72rem; font-weight:800; cursor:pointer;">← 前の質問へ戻る</button>` : ''}
+                        <span class="wizard-step-pill">${qData.badge}</span>
+                    </div>
                     <div class="wizard-progress-bar-wrap">
                         <div class="wizard-progress-bar-inner" style="width: ${progressPct}%;"></div>
                     </div>
@@ -4091,6 +4096,18 @@
             `;
         }
 
+        function prevWizardStep() {
+            if (isTransitioning) return;
+            playSound('select');
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+            } else if (currentPhase === 'vibe') {
+                currentPhase = 'spec';
+                currentQuestionIdx = getSpecQuestions().length - 1;
+            }
+            renderCurrentQuestion();
+        }
+
         function selectQuestionOption(cardIdx, questionId, optionKey) {
             if (isTransitioning) return;
             isTransitioning = true;
@@ -4126,58 +4143,95 @@
             const vibe = collectedAnswers.vibe || {};
             const workload = spec.workload || 'office_daily';
             const gameGenre = spec.game_genre || 'game_fps';
+            const resolution = spec.resolution || 'res_wqhd';
             const budget = spec.budget_tier || 'b_balance';
             const chassisVibe = vibe.chassis_vibe || 'wood_craft';
             const monStyle = vibe.monitor_style || 'curved_wide';
             const kbFeel = vibe.typing_feel || 'hhkb_feel';
 
-            // GPU initial match
+            // 1. GPU initial match (Workload x GameGenre x Resolution x Budget)
             let gpuKey = "rtx4070s";
-            if (workload === 'office_daily') gpuKey = "igpu";
-            else if (workload === 'gaming' && gameGenre === 'game_light') gpuKey = "rx6600";
-            else if (workload === 'gaming' && gameGenre === 'game_fps') gpuKey = (budget === 'b_cost') ? "rtx4060" : "rtx4060ti_16g";
-            else if (workload === 'ai_llm') gpuKey = (budget === 'b_flagship') ? "rtx4080s" : "rtx4070tis";
-            else if (workload === 'creator_3d') gpuKey = (budget === 'b_flagship') ? "rtx4080s" : "rtx4070s";
-            else if (budget === 'b_flagship') gpuKey = "rtx4080s";
-            else if (budget === 'b_cost') gpuKey = "rx6600";
+            if (workload === 'office_daily') {
+                gpuKey = (resolution === 'res_4k' && budget === 'b_flagship') ? "rtx4060" : "igpu";
+            } else if (workload === 'ai_llm') {
+                if (budget === 'b_cost') gpuKey = "rtx4060ti_16g";
+                else if (budget === 'b_flagship') gpuKey = "rtx5080";
+                else gpuKey = "rtx5070ti";
+            } else if (workload === 'creator_3d') {
+                if (budget === 'b_cost') gpuKey = "rtx4060ti_16g";
+                else if (budget === 'b_flagship') gpuKey = "rtx5080";
+                else gpuKey = (resolution === 'res_4k') ? "rtx5070ti" : "rtx5070";
+            } else if (workload === 'gaming') {
+                if (gameGenre === 'game_light') {
+                    gpuKey = (resolution === 'res_4k') ? "rtx4070s" : ((budget === 'b_cost') ? "rx6600" : "rtx4060");
+                } else if (gameGenre === 'game_fps') {
+                    if (budget === 'b_cost') gpuKey = "rtx4060";
+                    else if (budget === 'b_flagship') gpuKey = (resolution === 'res_4k') ? "rtx5080" : "rtx5070";
+                    else gpuKey = (resolution === 'res_fhd') ? "rtx4060ti_16g" : "rtx4070s";
+                } else {
+                    // game_heavy (AAA / Monster Hunter Wilds / Cyberpunk)
+                    if (budget === 'b_cost') gpuKey = (resolution === 'res_fhd') ? "rtx4060ti_16g" : "rx7800xt";
+                    else if (budget === 'b_flagship') gpuKey = "rtx5080";
+                    else gpuKey = (resolution === 'res_4k') ? "rx9070xt" : "rtx5070";
+                }
+            }
 
-            // CPU initial match
-            let cpuKey = "r7_7800x3d";
-            if (workload === 'office_daily') cpuKey = "i5_14400";
-            else if (workload === 'ai_llm' || workload === 'creator_3d') cpuKey = "i7_14700k";
-            else if (budget === 'b_cost') cpuKey = "r5_7600";
+            // 2. CPU initial match (Workload x GameGenre x Budget)
+            let cpuKey = "r7_9700x";
+            if (workload === 'office_daily') {
+                cpuKey = (budget === 'b_flagship') ? "r7_9700x" : "i5_14400";
+            } else if (workload === 'ai_llm' || workload === 'creator_3d') {
+                cpuKey = (budget === 'b_cost') ? "r7_9700x" : "i7_14700k";
+            } else if (workload === 'gaming') {
+                if (budget === 'b_cost') cpuKey = "r5_7600";
+                else if (budget === 'b_flagship') cpuKey = "r7_9800x3d";
+                else cpuKey = (gameGenre === 'game_fps') ? "r7_7800x3d" : "r7_9700x";
+            }
 
-            // Monitor initial match
-            let monKey = "mon_34_curved";
-            if (monStyle === 'dual_portrait') monKey = "mon_dual_setup";
-            else if (monStyle === 'esports_fast') monKey = (budget === 'b_flagship') ? "mon_245_esports" : "mon_27_wqhd";
-            else if (workload === 'office_daily' || budget === 'b_cost') monKey = "mon_24_fhd";
-            else if (budget === 'b_flagship' && monStyle === 'curved_wide') monKey = "mon_34_oled";
+            // 3. Monitor initial match (MonitorStyle x Resolution x Budget)
+            let monKey = "mon_27_wqhd";
+            if (monStyle === 'dual_portrait') {
+                monKey = "mon_dual_setup";
+            } else if (monStyle === 'esports_fast') {
+                if (resolution === 'res_4k') monKey = "mon_27_4k144";
+                else if (resolution === 'res_wqhd' && budget !== 'b_cost') monKey = "mon_27_wqhd";
+                else monKey = "mon_245_esports";
+            } else if (monStyle === 'curved_wide') {
+                if (budget === 'b_flagship') monKey = "mon_34_oled";
+                else if (budget === 'b_cost' && resolution === 'res_fhd') monKey = "mon_24_fhd";
+                else monKey = "mon_34_curved";
+            } else {
+                if (resolution === 'res_4k') monKey = (budget === 'b_flagship') ? "mon_32_4k" : "mon_27_4k144";
+                else if (resolution === 'res_wqhd') monKey = "mon_27_wqhd";
+                else monKey = "mon_24_fhd";
+            }
 
-            // Case initial match
+            // 4. Case initial match (including compact_itx -> Fractal Terra)
             let caseKey = "case_north";
-            if (chassisVibe === 'glass_rgb') caseKey = (budget === 'b_flagship') ? "case_o11" : "case_h6";
+            if (chassisVibe === 'compact_itx') caseKey = "case_terra";
+            else if (chassisVibe === 'glass_rgb') caseKey = (budget === 'b_flagship') ? "case_o11" : "case_h6";
             else if (chassisVibe === 'clean_white') caseKey = "case_h5_white";
 
-            // Keyboard initial match
+            // 5. Keyboard initial match
             let kbKey = "kb_hhkb";
-            if (kbFeel === 'metal_custom') kbKey = "kb_keychron_q1";
+            if (workload === 'gaming' && gameGenre === 'game_fps' && kbFeel !== 'low_profile') kbKey = "kb_wooting";
+            else if (kbFeel === 'metal_custom') kbKey = "kb_keychron_q1";
             else if (kbFeel === 'low_profile') kbKey = "kb_nuphy_air75";
-            else if (workload === 'gaming' && gameGenre === 'game_fps') kbKey = "kb_wooting";
 
-            // Cooler initial match
+            // 6. Cooler initial match
             let coolerKey = "cooler_ak400";
-            if (cpuKey === 'i7_14700k' || budget === 'b_flagship' || chassisVibe === 'glass_rgb') coolerKey = "cooler_ls720";
+            if (caseKey === 'case_terra') coolerKey = "cooler_ak400";
+            else if (cpuKey === 'i7_14700k' || cpuKey === 'r7_9800x3d' || budget === 'b_flagship' || chassisVibe === 'glass_rgb') coolerKey = "cooler_ls720";
             else if (chassisVibe === 'wood_craft' && budget === 'b_balance') coolerKey = "cooler_nh_d15";
 
-            // PSU initial match
+            // 7. PSU initial match
             let psuKey = "psu_750w";
-            if (gpuKey === 'igpu') psuKey = "psu_550w";
-            else if (gpuKey === 'rtx4080s' || gpuKey === 'rtx4070tis' || budget === 'b_flagship') psuKey = "psu_850w";
+            if (gpuKey === 'igpu' || gpuKey === 'rx6600') psuKey = "psu_550w";
+            else if (['rtx5080', 'rtx5070ti', 'rx9070xt', 'rtx4080s', 'rtx4070tis'].includes(gpuKey) || budget === 'b_flagship') psuKey = "psu_850w";
 
-            // RAM initial match
+            // 8. RAM initial match
             let ramKey = "ram_32_1tb";
-            if (gpuKey === 'igpu' || budget === 'b_cost') ramKey = "ram_16_1tb";
+            if (gpuKey === 'igpu' || (budget === 'b_cost' && workload !== 'ai_llm')) ramKey = "ram_16_1tb";
             else if (workload === 'ai_llm' || workload === 'creator_3d' || budget === 'b_flagship') ramKey = "ram_64_2tb";
 
             const pick = (cat, key) => masterPartsCatalog[cat].find(x => x.key === key) || masterPartsCatalog[cat][0];
@@ -5219,8 +5273,14 @@
             if (!buildParam) return false;
 
             try {
-                const jsonStr = decodeURIComponent(escape(atob(decodeURIComponent(buildParam))));
-                const decodedKeys = JSON.parse(jsonStr);
+                const rawDecoded = decodeURIComponent(buildParam);
+                let decodedKeys = null;
+                if (rawDecoded.trim().startsWith('{')) {
+                    decodedKeys = JSON.parse(rawDecoded);
+                } else {
+                    const jsonStr = decodeURIComponent(escape(atob(rawDecoded)));
+                    decodedKeys = JSON.parse(jsonStr);
+                }
                 if (!decodedKeys || typeof decodedKeys !== 'object') return false;
 
                 for (const catKey in decodedKeys) {
