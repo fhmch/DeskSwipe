@@ -3971,7 +3971,23 @@
                 return;
             }
 
+            const quickPresetHtml = (currentPhase === 'spec' && currentQuestionIdx === 0) ? `
+                <div style="margin-bottom: 18px; padding: 12px 16px; border-radius: 14px; background: rgba(0, 240, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.22); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="background: var(--cyan); color: #041016; font-size: 0.65rem; font-weight: 900; padding: 2px 7px; border-radius: 4px;">QUICK START</span>
+                        <span style="font-size: 0.78rem; font-weight: 800; color: #e2e8f0;">Skip quiz & preview popular curated builds in 1 click:</span>
+                    </div>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button type="button" onclick="applyQuickPreset('wood_wqhd')" style="background: rgba(251, 191, 36, 0.14); border: 1px solid rgba(251, 191, 36, 0.4); color: #fde68a; padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer;">🪵 Nordic Walnut 1440p</button>
+                        <button type="button" onclick="applyQuickPreset('fps_240')" style="background: rgba(0, 240, 255, 0.12); border: 1px solid rgba(0, 240, 255, 0.4); color: #67e8f9; padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer;">⚡ 240Hz Esports FPS</button>
+                        <button type="button" onclick="applyQuickPreset('ai_16g')" style="background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.45); color: #e9d5ff; padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer;">🤖 Local AI & LLM (16GB VRAM)</button>
+                        <button type="button" onclick="applyQuickPreset('white_minimal')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: #f8fafc; padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer;">🤍 Pure White Minimal</button>
+                    </div>
+                </div>
+            ` : '';
+
             panel.innerHTML = `
+                ${quickPresetHtml}
                 <div class="wizard-tracker">
                     <span class="wizard-step-pill">${qData.badge}</span>
                     <div class="wizard-progress-bar-wrap">
@@ -5077,29 +5093,17 @@
 
                 for (const catKey in decodedKeys) {
                     const itemKey = decodedKeys[catKey];
-                    const candList = partsCandidatesDB[catKey] || [];
+                    const candList = masterPartsCatalog[catKey] || [];
                     const found = candList.find(c => c.key === itemKey);
                     if (found) {
-                        selectedParts[catKey] = found;
+                        selectedParts[catKey] = { ...found };
                     }
                 }
 
-                // Set completed state
-                isDiagnosisCompleted = true;
-                document.getElementById("diagnostic-wizard").style.display = "none";
+                currentPhase = "done";
                 document.getElementById("canvas-section").style.display = "block";
                 document.getElementById("workspace-panel").style.display = "none";
-                
-                // Show header share buttons
-                const btnHeaderShareX = document.getElementById("btn-header-share-x");
-                const btnHeaderShareUrl = document.getElementById("btn-header-share-url");
-                const btnHeaderExportImg = document.getElementById("btn-header-export-img");
-                if (btnHeaderShareX) btnHeaderShareX.style.display = "inline-flex";
-                if (btnHeaderShareUrl) btnHeaderShareUrl.style.display = "inline-flex";
-                if (btnHeaderExportImg) btnHeaderExportImg.style.display = "inline-flex";
-
-                updateDynamicRigStage();
-                updateMainCanvasView();
+                renderBlueprintGrid();
                 showGrandCompleteReport();
                 showNotificationToast("共有された構成を読み込みました！");
                 return true;
@@ -5107,6 +5111,26 @@
                 console.error("Failed to load build from URL:", e);
                 return false;
             }
+        }
+
+        function applyQuickPreset(presetKey) {
+            playSound('fanfare');
+            if (presetKey === 'wood_wqhd') {
+                collectedAnswers.spec = { workload: 'gaming', game_genre: 'game_heavy', resolution: 'res_wqhd', budget_tier: 'b_balance' };
+                collectedAnswers.vibe = { chassis_vibe: 'wood_craft', monitor_style: 'curved_wide', typing_feel: 'hhkb_feel' };
+            } else if (presetKey === 'fps_240') {
+                collectedAnswers.spec = { workload: 'gaming', game_genre: 'game_fps', resolution: 'res_fhd', budget_tier: 'b_balance' };
+                collectedAnswers.vibe = { chassis_vibe: 'glass_rgb', monitor_style: 'esports_fast', typing_feel: 'hhkb_feel' };
+            } else if (presetKey === 'ai_16g') {
+                collectedAnswers.spec = { workload: 'ai_llm', resolution: 'res_4k', budget_tier: 'b_balance' };
+                collectedAnswers.vibe = { chassis_vibe: 'wood_craft', monitor_style: 'dual_portrait', typing_feel: 'metal_custom' };
+            } else if (presetKey === 'white_minimal') {
+                collectedAnswers.spec = { workload: 'gaming', game_genre: 'game_light', resolution: 'res_wqhd', budget_tier: 'b_cost' };
+                collectedAnswers.vibe = { chassis_vibe: 'clean_white', monitor_style: 'curved_wide', typing_feel: 'low_profile' };
+            }
+            currentPhase = "done";
+            resolveAllPartsFromAnswers();
+            showNotificationToast("Curated build loaded! Click any component slot to customize.");
         }
 
         function openLegalModal(tab) {
