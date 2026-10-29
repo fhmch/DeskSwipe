@@ -4036,16 +4036,43 @@
             }
 
             const quickPresetHtml = (currentPhase === 'spec' && currentQuestionIdx === 0) ? `
-                <div style="margin-bottom: 18px; padding: 12px 16px; border-radius: 14px; background: rgba(0, 240, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.22); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="background: var(--cyan); color: #041016; font-size: 0.65rem; font-weight: 900; padding: 2px 7px; border-radius: 4px;">QUICK START</span>
-                        <span style="font-size: 0.78rem; font-weight: 800; color: #e2e8f0;">質問をスキップして人気構成を1クリックで即プレビュー：</span>
+                <div style="margin-bottom: 22px; padding: 18px 20px; border-radius: 18px; background: linear-gradient(135deg, rgba(13, 17, 26, 0.95), rgba(8, 11, 18, 0.95)); border: 1.5px solid rgba(0, 240, 255, 0.35); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="background: var(--cyan); color: #041016; font-size: 0.68rem; font-weight: 900; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px;">⚡ QUICK 1-CLICK PRESETS</span>
+                            <span style="font-size: 0.85rem; font-weight: 800; color: #fff;">質問をスキップして人気デスク部屋を今すぐプレビュー：</span>
+                        </div>
+                        <span style="font-size: 0.72rem; color: var(--text-secondary);">いつでもパーツ変更可能</span>
                     </div>
-                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                        <button type="button" onclick="applyQuickPreset('wood_wqhd')" style="background: rgba(251, 191, 36, 0.14); border: 1px solid rgba(251, 191, 36, 0.4); color: #fde68a; padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer;">🪵 北欧ウッド×万能WQHD</button>
-                        <button type="button" onclick="applyQuickPreset('fps_240')" style="background: rgba(0, 240, 255, 0.12); border: 1px solid rgba(0, 240, 255, 0.4); color: #67e8f9; padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer;">⚡ 競技FPS 240Hz特化</button>
-                        <button type="button" onclick="applyQuickPreset('ai_16g')" style="background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.45); color: #e9d5ff; padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer;">🤖 AI開発・VRAM 16GB</button>
-                        <button type="button" onclick="applyQuickPreset('white_minimal')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: #f8fafc; padding: 5px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; cursor: pointer;">🤍 純白ミニマル静音</button>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px;">
+                        <button type="button" onclick="applyQuickPreset('wood_wqhd')" style="background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.35); color: #fde68a; padding: 10px 14px; border-radius: 12px; font-size: 0.78rem; font-weight: 800; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; transition: all 0.2s;">
+                            <span style="font-size: 1.3rem;">🪵</span>
+                            <div>
+                                <div style="color: #fff; font-weight: 800;">北欧ウッド × 万能WQHD</div>
+                                <div style="font-size: 0.65rem; color: #94a3b8; font-weight: 600;">Fractal North / 事務・ゲーム両用</div>
+                            </div>
+                        </button>
+                        <button type="button" onclick="applyQuickPreset('fps_240')" style="background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.35); color: #67e8f9; padding: 10px 14px; border-radius: 12px; font-size: 0.78rem; font-weight: 800; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; transition: all 0.2s;">
+                            <span style="font-size: 1.3rem;">⚡</span>
+                            <div>
+                                <div style="color: #fff; font-weight: 800;">競技FPS 240Hz 特化</div>
+                                <div style="font-size: 0.65rem; color: #94a3b8; font-weight: 600;">パノラマRGB / Apex・VALORANT</div>
+                            </div>
+                        </button>
+                        <button type="button" onclick="applyQuickPreset('ai_16g')" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.4); color: #e9d5ff; padding: 10px 14px; border-radius: 12px; font-size: 0.78rem; font-weight: 800; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; transition: all 0.2s;">
+                            <span style="font-size: 1.3rem;">🤖</span>
+                            <div>
+                                <div style="color: #fff; font-weight: 800;">AI開発 × VRAM 16GB</div>
+                                <div style="font-size: 0.65rem; color: #94a3b8; font-weight: 600;">4Kデュアル / ローカルLLM・画像生成</div>
+                            </div>
+                        </button>
+                        <button type="button" onclick="applyQuickPreset('white_minimal')" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff; padding: 10px 14px; border-radius: 12px; font-size: 0.78rem; font-weight: 800; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; transition: all 0.2s;">
+                            <span style="font-size: 1.3rem;">🤍</span>
+                            <div>
+                                <div style="color: #fff; font-weight: 800;">純白ミニマル静音</div>
+                                <div style="font-size: 0.65rem; color: #94a3b8; font-weight: 600;">オールホワイト / 高静音クーラー</div>
+                            </div>
+                        </button>
                     </div>
                 </div>
             ` : '';
@@ -5265,8 +5292,18 @@
         function loadBuildFromUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
             const presetParam = urlParams.get('preset');
+            const ergoH = urlParams.get('h');
+            const ergoDeskH = urlParams.get('deskH');
+
             if (presetParam && ['wood_wqhd', 'fps_240', 'ai_16g', 'white_minimal'].includes(presetParam)) {
-                setTimeout(() => applyQuickPreset(presetParam), 80);
+                setTimeout(() => {
+                    applyQuickPreset(presetParam);
+                    if (ergoDeskH) {
+                        setTimeout(() => {
+                            showNotificationToast(`📐 ErgoSwipeカルテ連携: あなたの理想デスク高（${ergoDeskH}cm）に合わせたデスク部屋を表示中！`);
+                        }, 500);
+                    }
+                }, 80);
                 return true;
             }
             const buildParam = urlParams.get('build');
