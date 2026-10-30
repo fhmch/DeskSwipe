@@ -39,14 +39,14 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="DeskSwipe">
     <meta property="og:title" content="DeskSwipe — Real-Time Battlestation & Custom PC Rig Builder">
-    <meta property="og:description" content="Interactive custom PC build simulator and battlestation design studio. Configure hardware, calculate wattage, and preview your dream workspace.">
+    <meta property="og:description" content="100% Free & No Sign-up. Simulate your dream custom PC build and ergonomic workspace in 30 seconds. Automatic component compatibility, PSU wattage calculation, and live market pricing.">
     <meta property="og:url" content="https://fhmch.github.io/DeskSwipe/">
     <meta property="og:image" content="https://fhmch.github.io/DeskSwipe/assets/setup_nordic_wood.jpg">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="DeskSwipe — Real-Time Battlestation & Custom PC Rig Builder">
-    <meta name="twitter:description" content="Interactive custom PC build simulator and battlestation design studio. Configure hardware, calculate wattage, and preview your dream workspace.">
+    <meta name="twitter:description" content="100% Free & No Sign-up. Simulate your dream custom PC build and ergonomic workspace in 30 seconds. Automatic component compatibility, PSU wattage calculation, and live market pricing.">
     <meta name="twitter:image" content="https://fhmch.github.io/DeskSwipe/assets/setup_nordic_wood.jpg">
 
     <!-- JSON-LD Structured Data (Schema.org) -->
@@ -2286,6 +2286,51 @@
         }
         .report-card-name { font-size: 0.85rem; font-weight: 800; color: #fff; }
         .report-card-price { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--cyber-gold); font-weight: 700; }
+    
+        /* Welcome Guide Banner */
+        .welcome-guide-banner {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(16, 185, 129, 0.05));
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 16px;
+            padding: 18px 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+        .guide-badge-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .guide-badge-pill {
+            background: rgba(0, 240, 255, 0.12);
+            color: var(--cyan);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .guide-lead-title {
+            font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+        .guide-lead-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
     </style>
 </head>
 <body>
@@ -2338,6 +2383,16 @@
     </header>
 
     <div class="app-container">
+        <!-- 3-Second Quick Welcome Guide -->
+        <div class="welcome-guide-banner">
+            <div class="guide-badge-row">
+                <span class="guide-badge-pill">⏱ 30-Second Quick Builder</span>
+                <span class="guide-badge-pill">✨ 100% Free & No Sign-up</span>
+                <span class="guide-badge-pill">🛡️ Hardware Compatibility & PSU Margin</span>
+            </div>
+            <h2 class="guide-lead-title">Design Your Dream Custom PC & Battlestation in 30 Seconds</h2>
+            <p class="guide-lead-desc">Unsure which parts match or what budget you need? Select your workflow and style preferences to instantly preview your complete rig specs, photorealistic setup renderings, wattage safety, and live retail pricing.</p>
+        </div>
         <!-- ==================================================== -->
         <!-- 1. REAL-TIME INTERACTIVE BUILD CANVAS (Post-Diagnosis)-->
         <!-- ==================================================== -->

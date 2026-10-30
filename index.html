@@ -23,8 +23,8 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DeskSwipe｜自作PC＆デスク環境 診断シミュレーター【予算・用途別】</title>
-    <meta name="description" content="用途（ゲーム・AI・動画編集・事務）・予算・好みのインテリアに合わせて自作PCとデスク環境を自動選定＆比較シミュレーション。パーツ互換性・電源容量計算・最安価格比較まで一目で把握できます。">
+    <title>DeskSwipe｜【無料・30秒】自作PC＆デスク環境シミュレーター【パーツ互換性・予算計算】</title>
+    <meta name="description" content="【完全無料・登録不要】用途と予算を選ぶだけ！あなたの理想の自作PC構成とデスク環境を30秒でシミュレーション。パーツ互換性判定・電源容量計算・最安価格比較まで一目で把握できます。">
     <meta name="keywords" content="自作PC, 構成, 見積もり, シミュレーター, 診断, ゲーミングPC, デスク環境, デスクツアー, Fractal North, 昇降デスク, 自作PC 初心者, 互換性チェック">
     <link rel="canonical" href="https://fhmch.github.io/DeskSwipe/">
     <link rel="alternate" hreflang="ja" href="https://fhmch.github.io/DeskSwipe/">
@@ -36,14 +36,14 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="DeskSwipe">
     <meta property="og:title" content="DeskSwipe｜自作PC＆デスク環境 診断シミュレーター【予算・用途別】">
-    <meta property="og:description" content="用途・予算・インテリアに合わせて自作PCとデスク環境を自動選定＆比較。互換性・電源容量・実売価格を完全ナビゲート。">
+    <meta property="og:description" content="【完全無料・登録不要】用途と予算を選ぶだけ！あなたの理想の自作PC構成とデスク環境を30秒でシミュレーション。">
     <meta property="og:url" content="https://fhmch.github.io/DeskSwipe/">
     <meta property="og:image" content="https://fhmch.github.io/DeskSwipe/assets/setup_nordic_wood.jpg">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="DeskSwipe｜自作PC＆デスク環境 診断シミュレーター【予算・用途別】">
-    <meta name="twitter:description" content="用途・予算・インテリアに合わせて自作PCとデスク環境を自動選定＆比較。互換性・電源容量・実売価格を完全ナビゲート。">
+    <meta name="twitter:description" content="【完全無料・登録不要】用途と予算を選ぶだけ！あなたの理想の自作PC構成とデスク環境を30秒でシミュレーション。">
     <meta name="twitter:image" content="https://fhmch.github.io/DeskSwipe/assets/setup_nordic_wood.jpg">
 
     <!-- JSON-LD Structured Data (Schema.org) -->
@@ -2283,6 +2283,51 @@
         }
         .report-card-name { font-size: 0.85rem; font-weight: 800; color: #fff; }
         .report-card-price { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--cyber-gold); font-weight: 700; }
+    
+        /* Welcome Guide Banner */
+        .welcome-guide-banner {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(16, 185, 129, 0.05));
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 16px;
+            padding: 18px 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+        .guide-badge-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .guide-badge-pill {
+            background: rgba(0, 240, 255, 0.12);
+            color: var(--cyan);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .guide-lead-title {
+            font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+        .guide-lead-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
     </style>
 </head>
 <body>
@@ -2335,6 +2380,16 @@
     </header>
 
     <div class="app-container">
+        <!-- 3-Second Quick Welcome Guide -->
+        <div class="welcome-guide-banner">
+            <div class="guide-badge-row">
+                <span class="guide-badge-pill">⏱ 30秒クイック診断</span>
+                <span class="guide-badge-pill">✨ 完全無料・登録不要</span>
+                <span class="guide-badge-pill">🛡️ パーツ互換性・電源自動判定</span>
+            </div>
+            <h2 class="guide-lead-title">理想の自作PC ＆ デスク空間を、30秒で丸ごとシミュレーション</h2>
+            <p class="guide-lead-desc">「何から選べばいいか分からない」「パーツの相性や予算が不安」を即座に解決。好みのスタイルや用途を選ぶだけで、最適なPCスペック・デスク寸法・リアルな完成写真・見積もりを一目で確認できます。</p>
+        </div>
         <!-- ==================================================== -->
         <!-- 1. REAL-TIME INTERACTIVE BUILD CANVAS (Post-Diagnosis)-->
         <!-- ==================================================== -->
