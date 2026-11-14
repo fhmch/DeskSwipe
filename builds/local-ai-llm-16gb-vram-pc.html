@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Analytics 4 (GA4) & Affiliate Click Tracker -->
+    <!-- Google Analytics 4 (GA4) & Multi-Channel Monetization Tracker -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-MF3C6Q42WJ"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -14,7 +14,13 @@
             const a = e.target.closest('a');
             if (!a || !a.href) return;
             const h = a.href;
-            if (h.includes('amazon.') || h.includes('rakuten.') || h.includes('yahoo.') || h.includes('moshimo.') || h.includes('kakaku.') || h.includes('cofo.') || h.includes('flexispot.')) {
+            if (h.endsWith('.stl') || h.endsWith('.scad')) {
+                gtag('event', 'stl_download', {
+                    event_category: 'digital_asset',
+                    event_label: h.split('/').pop(),
+                    page_path: window.location.pathname
+                });
+            } else if (h.includes('amazon.') || h.includes('rakuten.') || h.includes('yahoo.') || h.includes('moshimo.') || h.includes('kakaku.') || h.includes('cofo.') || h.includes('flexispot.') || h.includes('ebay.') || h.includes('newegg.') || h.includes('bhphotovideo.') || h.includes('keychron.') || h.includes('nuphy.') || h.includes('wooting.') || h.includes('ko-fi.') || h.includes('buymeacoffee.') || h.includes('booth.pm')) {
                 gtag('event', 'affiliate_click', {
                     event_category: 'monetization',
                     event_label: (a.innerText || '').trim().slice(0, 60) || h,
@@ -33,7 +39,7 @@
     <meta property="og:url" content="https://fhmch.github.io/DeskSwipe/builds/local-ai-llm-16gb-vram-pc.html">
     <meta property="og:image" content="https://fhmch.github.io/DeskSwipe/ogp_Share_Card.jpg">
     <meta property="article:published_time" content="2026-10-25">
-    <meta property="article:modified_time" content="2026-11-13">
+    <meta property="article:modified_time" content="2026-11-14">
     <meta name="twitter:card" content="summary_large_image">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script type="application/ld+json">
@@ -62,7 +68,7 @@
         "headline": "ローカルLLM・Stable Diffusion・AI開発向け「VRAM 16GB以上必須」PC＆マルチモニター構成ガイド",
         "description": "Stable Diffusion XL (SDXL)/Flux画像生成、Ollama/Llama 3ローカルLLM推論、動画編集で絶対に妥協してはいけない「VRAM 16GB＆システムメモリ64GB」の最適PC・デスク構成。",
         "datePublished": "2026-10-25",
-        "dateModified": "2026-11-13",
+        "dateModified": "2026-11-14",
         "author": {
           "@type": "Organization",
           "name": "DeskSwipe 開発・運営プロジェクトチーム"
@@ -172,7 +178,7 @@
     <main class="container">
         <div style="margin-bottom: 12px; font-size: 12px; color: var(--text-secondary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
             <div><a href="../" style="color: var(--cyan); text-decoration: none;">DeskSwipe トップ</a> &gt; 目的・予算別 PC＆デスク完成レシピ &gt; <strong>AI開発・ローカルLLM特化</strong></div>
-            <div>最終更新: 2026-11-13</div>
+            <div>最終更新: 2026-11-14</div>
         </div>
 
         <span class="badge">AI開発・ローカルLLM特化 ｜ 物理干渉・電源容量クリア済</span>
@@ -253,6 +259,47 @@
                 <a href="https://www.amazon.co.jp/s?k=BenQ%20ScreenBar%20Halo%20%E3%83%A2%E3%83%8B%E3%82%BF%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88" target="_blank" rel="noopener nofollow" class="shop-btn btn-amz">Amazonで実勢価格を見る ↗</a>
             </div>
         </div>
+
+
+        <!-- Original 3D Printable Desk Mods (02_CadQuery_3D Integration & Direct Support) -->
+        <section style="margin: 28px 0; background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(12, 28, 24, 0.92)); border: 1.5px solid rgba(251, 191, 36, 0.45); border-radius: 18px; padding: 22px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                <span style="background: rgba(251, 191, 36, 0.18); color: #fde68a; border: 1px solid rgba(251, 191, 36, 0.45); font-size: 11px; font-weight: 900; padding: 3px 10px; border-radius: 20px;">🛠️ 独自設計 3Dプリント実用デスク治具（STL & OpenSCAD 無料公開）</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #94a3b8;">Code-CAD Parametric Series v1.0</span>
+            </div>
+            <h3 style="font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 6px;">🖨️ デスク配線の垂れ下がり・天板の凹みを解決する「3Dプリント専用パーツ」</h3>
+            <p style="font-size: 12.5px; color: #cbd5e1; margin-bottom: 14px; line-height: 1.6;">
+                当スタジオのエンジニアが設計した、ネジ・穴あけ不要のデスク周辺3Dモデル（STLデータ＆板厚を自由に変更できるOpenSCAD設計コード）を無料ダウンロードいただけます。3Dプリンタをお持ちでない方も、既製品の配線トレー・補強プレートを楽天・Yahooで比較可能です。
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-bottom: 14px;">
+                <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px;">
+                    <div style="font-size: 11px; color: #34d399; font-weight: 800;">MODEL 01 // 配線整理</div>
+                    <div style="font-size: 13.5px; font-weight: 800; color: #fff; margin: 3px 0 6px;">天板エッジ 3連ケーブルクリップ (25mm厚)</div>
+                    <a href="../assets/stl/under_desk_cable_clip_25mm.stl" download style="display: inline-block; font-size: 11.5px; font-weight: 800; color: #04130e; background: #34d399; padding: 6px 12px; border-radius: 6px; text-decoration: none;">⬇ STLダウンロード (無料)</a>
+                </div>
+                <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px;">
+                    <div style="font-size: 11px; color: #67e8f9; font-weight: 800;">MODEL 02 // 省スペース収納</div>
+                    <div style="font-size: 13.5px; font-weight: 800; color: #fff; margin: 3px 0 6px;">差し込み式 ヘッドホン＆VRハンガー</div>
+                    <a href="../assets/stl/desk_edge_headphone_hook_28mm.stl" download style="display: inline-block; font-size: 11.5px; font-weight: 800; color: #041016; background: #00f0ff; padding: 6px 12px; border-radius: 6px; text-decoration: none;">⬇ STLダウンロード (無料)</a>
+                </div>
+                <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px;">
+                    <div style="font-size: 11px; color: #fde68a; font-weight: 800;">MODEL 03 // 天板保護・パラメトリック</div>
+                    <div style="font-size: 13.5px; font-weight: 800; color: #fff; margin: 3px 0 6px;">モニターアーム補強プレート ＆ OpenSCAD</div>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <a href="../assets/stl/monitor_arm_reinforce_plate.stl" download style="font-size: 11.5px; font-weight: 800; color: #041016; background: #fbbf24; padding: 6px 10px; border-radius: 6px; text-decoration: none;">⬇ 補強板STL</a>
+                        <a href="../assets/stl/parametric_desk_mods.scad" download style="font-size: 11.5px; font-weight: 800; color: #fde68a; border: 1px solid rgba(251,191,36,0.5); padding: 5px 10px; border-radius: 6px; text-decoration: none;">⬇ .scad設計コード</a>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px;">
+                <span style="color: #94a3b8;">💡 3Dプリンタ不要の完成品アクセサリを探す / 開発者にカスタム寸法をリクエスト：</span>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="https://af.moshimo.com/af/c/click?a_id=5840290&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%25E3%2583%2587%25E3%2582%25B9%25E3%2582%25AF%2520%25E3%2582%25B1%25E3%2583%25BC%25E3%2583%2596%25E3%2583%25AB%25E3%2583%2588%25E3%2583%25AC%25E3%2583%25BC%2520%25E3%2582%25AF%25E3%2583%25A9%25E3%2583%25B3%25E3%2583%2597%2520%25E3%2583%2598%25E3%2583%2583%25E3%2583%2589%25E3%2583%259B%25E3%2583%25B3%25E3%2583%258F%25E3%2583%25B3%25E3%2582%25AC%25E3%2583%25BC%2F" target="_blank" rel="noopener nofollow" style="background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #fecaca; padding: 6px 12px; border-radius: 8px; text-decoration: none; font-weight: 800;">楽天市場で完成品治具を探す ↗</a>
+                    <a href="https://af.moshimo.com/af/c/click?a_id=5840291&p_id=1225&pc_id=1925&pl_id=18502&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3D%25E3%2583%2587%25E3%2582%25B9%25E3%2582%25AF%2520%25E3%2582%25B1%25E3%2583%25BC%25E3%2583%2596%25E3%2583%25AB%25E3%2583%2588%25E3%2583%25AC%25E3%2583%25BC%2520%25E3%2582%25AF%25E3%2583%25A9%25E3%2583%25B3%25E3%2583%2597%2520%25E3%2583%25A2%25E3%2583%258B%25E3%2582%25BF%25E3%2583%25BC%25E3%2582%25A2%25E3%2583%25BC%25E3%2583%25A0%25E8%25A3%259C%25E5%25BC%25B7%25E3%2583%2597%25E3%2583%25AC%25E3%2583%25BC%25E3%2583%2588" target="_blank" rel="noopener nofollow" style="background: rgba(59,130,246,0.2); border: 1px solid #3b82f6; color: #bfdbfe; padding: 6px 12px; border-radius: 8px; text-decoration: none; font-weight: 800;">Yahoo!で完成品治具を探す ↗</a>
+                    <a href="https://github.com/fhmch/DeskSwipe/issues" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 12px; border-radius: 8px; text-decoration: none; font-weight: 700;">☕ カスタム寸法リクエスト・開発応援 ↗</a>
+                </div>
+            </div>
+        </section>
 
         <h2>2. 他の目的・テイスト別PC＆デスク構成レシピを見る（全10レシピ）</h2>
         <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 16px; padding: 18px; margin-bottom: 28px; display: grid; gap: 8px;">
